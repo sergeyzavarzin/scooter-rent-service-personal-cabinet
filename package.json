@@ -6,9 +6,19 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "antd": "^4.0.2",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "formik": "^2.1.4",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.8",
+    "mobx-state-tree": "^3.15.0",
+    "moment": "^2.24.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0"
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "yup": "^0.28.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,5 +40,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.4",
+    "better-npm-run": "^0.1.1",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-react-app": "^5.2.0",
+    "node-sass": "^4.13.1",
+    "prettier": "^1.19.1"
   }
 }
