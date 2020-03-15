@@ -1,12 +1,9 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+ls # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
-
-# testing
-/coverage
 
 # production
 /build
@@ -17,9 +14,25 @@
 .env.development.local
 .env.test.local
 .env.production.local
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.idea/
+._*
+/dist/
+.package-lock.json
 
+
+# Editor directories and files
 .idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+/coverage
+
+test-report.xml*
+
+.npmrc

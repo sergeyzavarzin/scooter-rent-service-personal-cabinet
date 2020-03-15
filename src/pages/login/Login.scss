@@ -1,0 +1,27 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+}
+
+.login-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+
+  &__form {
+    //margin: 0 auto;
+  }
+
+  &__button {
+    width: 100%;
+  }
+
+  &__links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

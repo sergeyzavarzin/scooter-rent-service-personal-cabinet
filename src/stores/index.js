@@ -6,8 +6,8 @@ const AppStore = types
   .model('AppStore', {
     appLoaded: types.optional(types.boolean, false),
     userStore: types.optional(UserStore, {
-      firstName: 'Ser',
-      lastName: 'Zav'
+      firstName: 'Иван',
+      lastName: 'Иванов'
     })
   })
   .views(self => ({
