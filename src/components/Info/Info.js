@@ -1,8 +1,6 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 import { Typography, Button, List, Card, Avatar } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
-
 
 import './Info.scss';
 
@@ -10,22 +8,14 @@ const { Title } = Typography;
 
 const listData = [
   {
-    href: 'http://ant.design',
-    title: `ant design part 1`,
+    title: `Иван Иванов`,
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+      'Подписка активна до: 30.03.2020',
     content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      '',
   },
 ];
-
-const IconText = ({ icon, text }) => (
-  <span>
-    {React.createElement(icon, { style: { marginRight: 8 } })}
-    {text}
-  </span>
-);
 
 const data = [
   {
@@ -47,30 +37,30 @@ const Info = ({store}) => {
         itemLayout="vertical"
         size="large"
         dataSource={listData}
-        footer={
-          <div>
-            <b>ant design</b> footer part
-          </div>
-        }
+        // footer={
+        //   <div>
+        //     <b>ant design</b> footer part
+        //   </div>
+        // }
         renderItem={item => (
           <List.Item
             key={item.title}
-            actions={[
-              <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-              <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-              <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-            ]}
+            // actions={[
+            //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+            //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+            //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+            // ]}
             extra={
               <img
                 width={272}
                 alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                src="https://cdn1.technopark.ru/technopark/photos_resized/product/600_600/145022/1_145022.jpg"
               />
             }
           >
             <List.Item.Meta
               avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
+              title={<span>{item.title}</span>}
               description={item.description}
             />
             {item.content}

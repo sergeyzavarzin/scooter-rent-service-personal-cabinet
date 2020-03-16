@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Form, Input, Button, Select} from 'antd';
+import {Form, Input, Button, Select, Checkbox} from 'antd';
 
 import './Registration.scss';
 
@@ -79,6 +79,11 @@ class Registration extends React.Component {
                   rules={[{required: true, message: 'Укажите пароль повторно'}]}
                 >
                   <Input placeholder='Повторите пароль'/>
+                </Form.Item>
+                <Form.Item>
+                  <Checkbox style={{textAlign: 'left', fontSize: 11}}>
+                    Я согласен с <a href='/agreement'>условиями использования сервиса</a>.
+                  </Checkbox>
                 </Form.Item>
                 <Form.Item>
                   <Button
