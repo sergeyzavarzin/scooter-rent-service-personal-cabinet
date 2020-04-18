@@ -1,126 +1,121 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import {Form, Input, Button, Select, Checkbox} from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Button, Checkbox, notification } from 'antd';
+
+import { registration } from './Registration.service';
 
 import './Registration.scss';
 
-class Registration extends React.Component {
+const Registration = () => {
+	const [isLoading, setIsLoading] = useState(false);
 
-  state = {
-    step: 1,
-  };
+	const onFinish = async values => {
+		setIsLoading(true);
+		try {
+			const registrationResponse = await registration({
+				email: values.email,
+				phone: values.phone,
+				firstName: values.firstName,
+				lastName: values.lastName,
+				patronymic: values.patronymic,
+				password: values.password,
+			});
+			const { formUrl = null } = registrationResponse;
+			if (formUrl) {
+				notification.open({
+					message: 'Успешно!',
+					description: 'Сейчас вы будете перенаправлены на форму оплаты.',
+				});
+				setTimeout(() => {
+					window.location.href = formUrl;
+				}, 5000);
+			} else {
+				notification.open({
+					message: 'Ошибка.',
+					description: 'Попробуйте повторить ваш запрос позднее.',
+				});
+			}
+		} catch (e) {
+			notification.open({
+				message: 'Ошибка.',
+				description: 'Попробуйте повторить ваш запрос позднее.',
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-  onFinish = () => 1;
+	const onFinishFailed = errorInfo => console.log('Failed:', errorInfo);
 
-  render() {
-    const {step} = this.state;
-    return (
-      <div className='registration-page'>
-        <div className='registration-form'>
-          <h1>Регистрация</h1>
-          <Form
-            name='registration'
-            className='registration-form__form'
-            onFinish={this.onFinish}
-          >
-            <h4>Шаг {step}/3:</h4>
-            {
-              step === 1 && <>
-                <Form.Item
-                  name='firstName'
-                  rules={[{required: true, message: 'Укажите Ваше имя'}]}
-                >
-                  <Input placeholder='Ваше Имя'/>
-                </Form.Item>
-                <Form.Item
-                  name='lastName'
-                  rules={[{required: true, message: 'Укажите Вашу фамилию'}]}
-                >
-                  <Input placeholder='Ваша Фамилия'/>
-                </Form.Item>
-                <Form.Item
-                  name='email'
-                  rules={[{required: true, message: 'Укажите E-mail'}]}
-                >
-                  <Input placeholder='E-mail'/>
-                </Form.Item>
-                <Form.Item
-                  name='phone'
-                  rules={[{required: true, message: 'Укажите Ваш телефон'}]}
-                >
-                  <Input placeholder='Телефон'/>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    type='primary'
-                    className='registration-form__button'
-                    onClick={() => this.setState({step: 2})}
-                  >
-                    Далее
-                  </Button>
-                </Form.Item>
-                <div className='registration-form__links'>
-                  <Link to='/login'>
-                    У меня уже есть аккаунт
-                  </Link>
-                </div>
-              </>
-            }
-            {
-              step === 2 && <>
-                <Form.Item
-                  name='password'
-                  rules={[{required: true, message: 'Придумайте пароль'}]}
-                >
-                  <Input placeholder='Придумайте пароль'/>
-                </Form.Item>
-                <Form.Item
-                  name='retryPassword'
-                  rules={[{required: true, message: 'Укажите пароль повторно'}]}
-                >
-                  <Input placeholder='Повторите пароль'/>
-                </Form.Item>
-                <Form.Item>
-                  <Checkbox style={{textAlign: 'left', fontSize: 11}}>
-                    Я согласен с <a href='/agreement'>условиями использования сервиса</a>.
-                  </Checkbox>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    type='primary'
-                    className='registration-form__button'
-                    onClick={() => this.setState({step: 3})}
-                  >
-                    Далее
-                  </Button>
-                </Form.Item>
-              </>
-            }
-            {
-              step === 3 && <>
-                <Form.Item>
-                  <div style={{textAlign: 'left', marginBottom: 7}}>
-                    Выберите цвет самоката:
-                  </div>
-                  <Select>
-                    <Select.Option value="white">Белый</Select.Option>
-                    <Select.Option value="black">Черный</Select.Option>
-                  </Select>
-                </Form.Item>
-                <Button
-                  type='primary'
-                  className='registration-form__button'
-                  onClick={() => 1}
-                >
-                  Перейти к оплате
-                </Button>
-              </>
-            }
-          </Form>
-        </div>
-      </div>
-    )
-  }
-}
+	return (
+		<div className='registration-page'>
+			<div className='registration-form'>
+				<h1>Регистрация</h1>
+				<Form
+					name='registration'
+					className='registration-form__form'
+					onFinish={onFinish}
+					onFinishFailed={onFinishFailed}
+				>
+					<Form.Item
+						name='lastName'
+						rules={[{ required: true, message: 'Укажите Вашу фамилию' }]}
+					>
+						<Input placeholder='Фамилия' />
+					</Form.Item>
+					<Form.Item
+						name='firstName'
+						rules={[{ required: true, message: 'Укажите Ваше имя' }]}
+					>
+						<Input placeholder='Имя' />
+					</Form.Item>
+					<Form.Item
+						name='patronymic'
+						rules={[{ required: true, message: 'Укажите Вашу фамилию' }]}
+					>
+						<Input placeholder='Отчество' />
+					</Form.Item>
+					<Form.Item
+						name='email'
+						rules={[{ required: true, message: 'Укажите E-mail' }]}
+					>
+						<Input placeholder='E-mail' />
+					</Form.Item>
+					<Form.Item
+						name='phone'
+						rules={[{ required: true, message: 'Укажите Ваш телефон' }]}
+					>
+						<Input placeholder='Телефон' />
+					</Form.Item>
+					<Form.Item
+						name='password'
+						rules={[{ required: true, message: 'Придумайте пароль' }]}
+					>
+						<Input.Password placeholder='Придумайте пароль' />
+					</Form.Item>
+					<Form.Item
+						name='retryPassword'
+						rules={[{ required: true, message: 'Укажите пароль повторно' }]}
+					>
+						<Input.Password placeholder='Повторите пароль' />
+					</Form.Item>
+					<Form.Item>
+						<Checkbox style={{ textAlign: 'left', fontSize: 11 }}>
+							Я согласен с{' '}
+							<a href='/agreement'>условиями использования сервиса</a>.
+						</Checkbox>
+					</Form.Item>
+					<Button
+						type='primary'
+						htmlType='submit'
+						loading={isLoading}
+						className='registration-form__button'
+					>
+						Перейти к оплате
+					</Button>
+				</Form>
+			</div>
+		</div>
+	);
+};
 
 export default Registration;

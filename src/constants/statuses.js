@@ -1,5 +1,3 @@
-const STATUSES = {
-
-};
+const STATUSES = {};
 
 export default STATUSES;

@@ -1,0 +1,1 @@
+export FailPayment from './FailPayment';

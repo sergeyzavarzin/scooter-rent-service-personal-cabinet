@@ -11,13 +11,13 @@ import './App.scss';
 const store = appStore.create({});
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      <Router>
-        <Layout/>
-      </Router>
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<Router>
+				<Layout />
+			</Router>
+		</Provider>
+	);
 };
 
 export default App;
