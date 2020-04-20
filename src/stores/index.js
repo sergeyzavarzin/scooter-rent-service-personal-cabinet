@@ -2,12 +2,22 @@ import { types } from 'mobx-state-tree';
 
 import UserStore from './UserStore';
 
+const token = localStorage.getItem('token') || '';
+const userInfo = localStorage.getItem('userInfo')
+	? JSON.parse(localStorage.getItem('userInfo'))
+	: {};
+
+const { firstName = '', lastName = '', patronymic = '', email = '' } = userInfo;
+
 const AppStore = types
 	.model('AppStore', {
 		appLoaded: types.optional(types.boolean, false),
 		userStore: types.optional(UserStore, {
-			firstName: 'Иван',
-			lastName: 'Иванов',
+			token,
+			firstName,
+			lastName,
+			patronymic,
+			email,
 		}),
 	})
 	.views(self => ({}))

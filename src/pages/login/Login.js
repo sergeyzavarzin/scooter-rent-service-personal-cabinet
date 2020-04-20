@@ -3,15 +3,39 @@ import { Link, withRouter } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
+import { login } from '../../globals/services/login';
+
 import './Login.scss';
 
 class Login extends React.Component {
-	onFinish = () => {
-		localStorage.setItem('token', 'asddasdbj$^%gjsbxjGHFuy');
-		window.location.href = '/';
+	state = {
+		isLoading: false,
+	};
+
+	onFinish = values => {
+		this.setState({ isLoading: true });
+		login(values.email, values.password)
+			.then(result => {
+				localStorage.setItem('token', result.accessToken);
+				localStorage.setItem(
+					'userInfo',
+					JSON.stringify({
+						email: result.email,
+						phone: result.phone,
+						lastName: result.lastName,
+						firstName: result.firstName,
+						patronymic: result.patronymic,
+						subscriptionId: result.subscriptionId,
+					})
+				);
+				window.location.href = '/';
+			})
+			.catch(error => console.log(error))
+			.finally(() => this.setState({ isLoading: true }));
 	};
 
 	render() {
+		const { isLoading } = this.state;
 		return (
 			<div className='login-page'>
 				<div className='login-form'>
@@ -22,12 +46,12 @@ class Login extends React.Component {
 						onFinish={this.onFinish}
 					>
 						<Form.Item
-							name='username'
+							name='email'
 							rules={[{ required: true, message: 'Укажите логин' }]}
 						>
 							<Input
 								prefix={<UserOutlined className='site-form-item-icon' />}
-								placeholder='Логин'
+								placeholder='E-mail'
 							/>
 						</Form.Item>
 						<Form.Item
@@ -45,6 +69,7 @@ class Login extends React.Component {
 								type='primary'
 								htmlType='submit'
 								className='login-form__button'
+								loading={isLoading}
 							>
 								Войти
 							</Button>
