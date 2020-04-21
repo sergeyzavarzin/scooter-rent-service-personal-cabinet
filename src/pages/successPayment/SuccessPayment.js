@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { notification, Spin, Typography } from 'antd';
+
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
-import { notification } from 'antd';
 
 const SuccessPayment = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -28,9 +29,14 @@ const SuccessPayment = () => {
 	}, []);
 
 	return isLoading ? (
-		<div>Loading...</div>
+		<Spin size='large' />
 	) : (
-		<div>Оплата прошла успешно: {status}</div>
+		<>
+			<Typography.Title level={2}>
+				Не удалось произвести платеж
+			</Typography.Title>
+			{status && <p>{status}</p>}
+		</>
 	);
 };
 

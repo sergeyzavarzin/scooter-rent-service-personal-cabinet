@@ -1,1 +1,3 @@
-export SuccessPayment from './SuccessPayment';
+import SuccessPayment from './SuccessPayment';
+
+export default SuccessPayment;

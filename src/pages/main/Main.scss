@@ -1,0 +1,24 @@
+.main-page {
+  &__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h4 {
+      margin-bottom: 0;
+      margin-left: 15px;
+    }
+  }
+
+  &__subscription {
+    font-size: 18px;
+  }
+
+  &__subscription-status {
+    margin-bottom: 10px;
+  }
+
+  &__subscription-date {
+
+  }
+}

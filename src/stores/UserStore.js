@@ -7,13 +7,14 @@ const UserStore = types
 		lastName: types.optional(types.string, ''),
 		patronymic: types.optional(types.string, ''),
 		email: types.optional(types.string, ''),
+		subscriptionId: types.optional(types.string, ''),
 	})
 	.views(self => ({
 		get name() {
 			return `${self.firstName} ${self.lastName}`;
 		},
 		get fullName() {
-			return `${self.firstName} ${self.lastName} ${self.patronymic}`;
+			return `${self.firstName} ${self.patronymic} ${self.lastName}`;
 		},
 		get isUserLogged() {
 			return !!self.token.length;

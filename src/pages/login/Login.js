@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { login } from '../../globals/services/login';
@@ -30,8 +30,20 @@ class Login extends React.Component {
 				);
 				window.location.href = '/';
 			})
-			.catch(error => console.log(error))
-			.finally(() => this.setState({ isLoading: true }));
+			.catch(error => {
+				if (
+					error.response.data.message &&
+					typeof error.response.data.message === 'string'
+				) {
+					notification.open({
+						message: 'Ошибка.',
+						description:
+							error.response.data.message ||
+							'Попробуйте повторить ваш запрос позднее.',
+					});
+				}
+			})
+			.finally(() => this.setState({ isLoading: false }));
 	};
 
 	render() {
@@ -47,7 +59,16 @@ class Login extends React.Component {
 					>
 						<Form.Item
 							name='email'
-							rules={[{ required: true, message: 'Укажите логин' }]}
+							rules={[
+								{
+									type: 'email',
+									message: 'Введите валидный E-mail',
+								},
+								{
+									required: true,
+									message: 'Введите E-mail',
+								},
+							]}
 						>
 							<Input
 								prefix={<UserOutlined className='site-form-item-icon' />}

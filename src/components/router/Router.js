@@ -5,8 +5,12 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import MainPage from '../../pages/main';
 import Login from '../../pages/login';
 import Registration from '../../pages/registration';
-import FailPayment from '../../pages/failPayment/FailPayment';
-import SuccessPayment from '../../pages/successPayment/SuccessPayment';
+import FailPayment from '../../pages/failPayment';
+import SuccessPayment from '../../pages/successPayment';
+import Settings from '../../pages/settings';
+import Payments from '../../pages/payments';
+import Subscription from '../../pages/subscription';
+import Help from '../../pages/help';
 
 const Router = ({
 	store: {
@@ -15,7 +19,11 @@ const Router = ({
 }) => {
 	return isUserLogged ? (
 		<Switch>
-			<Route path={['/', '/main']} exact render={MainPage} />
+			<Route path={['/', '/main']} exact component={MainPage} />
+			<Route path='/subscription' exact component={Subscription} />
+			<Route path='/payments' exact component={Payments} />
+			<Route path='/settings' exact component={Settings} />
+			<Route path='/help' exact component={Help} />
 			<Redirect to='/' />
 		</Switch>
 	) : (
