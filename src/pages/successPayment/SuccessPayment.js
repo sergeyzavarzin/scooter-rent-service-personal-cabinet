@@ -32,9 +32,7 @@ const SuccessPayment = () => {
 		<Spin size='large' />
 	) : (
 		<>
-			<Typography.Title level={2}>
-				Не удалось произвести платеж
-			</Typography.Title>
+			<Typography.Title level={2}>Платеж произведен успешно</Typography.Title>
 			{status && <p>{status}</p>}
 		</>
 	);
