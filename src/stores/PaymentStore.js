@@ -4,6 +4,9 @@ import axios from 'axios';
 const Payment = types.model('Payment', {
 	createDateTime: types.string,
 	orderNumber: types.string,
+	amount: types.number,
+	cardInfo: types.string,
+	status: types.string,
 });
 
 const PaymentStore = types

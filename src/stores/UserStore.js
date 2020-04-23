@@ -10,6 +10,9 @@ const UserStore = types
 		subscriptionId: types.optional(types.string, ''),
 	})
 	.views(self => ({
+		get initials() {
+			return `${self.firstName.slice(0, 1)} ${self.lastName.slice(0, 1)}`;
+		},
 		get name() {
 			return `${self.firstName} ${self.lastName}`;
 		},

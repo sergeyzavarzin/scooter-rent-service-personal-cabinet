@@ -1,6 +1,35 @@
+@import './variables';
+@import '../fonts/Formular/fonts.css';
+
+html, body {
+  font-family: 'Formular', Arial, sans-serif;
+}
+
+.ant-layout-header {
+  position: fixed;
+  width: 100%;
+}
+
+.ant-layout-content {
+  margin-top: 80px !important;
+}
+
 .page-wrapper {
   padding: 20px;
   background: #fff;
   margin-bottom: 20px;
-  min-height: 600px;
+  min-height: 55vh;
+}
+
+.ant-menu-item.ant-menu-item-selected {
+  color: $text-color;
+
+  &:hover {
+    color: $text-color;
+  }
+}
+
+h1.ant-typography {
+  font-weight: bold;
+  color: #fff;
 }

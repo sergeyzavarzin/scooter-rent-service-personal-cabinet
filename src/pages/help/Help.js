@@ -7,7 +7,7 @@ import './Help.scss';
 const Help = ({ store }) => {
 	return (
 		<div className='help-page'>
-			<Typography.Title level={2}>Помощь</Typography.Title>
+			<Typography.Title level={1}>Помощь</Typography.Title>
 			<div className='page-wrapper'>
 				<div className='help-page__wrapper'>
 					<a

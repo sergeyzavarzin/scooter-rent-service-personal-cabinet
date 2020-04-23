@@ -14,7 +14,7 @@ const Main = ({
 }) => {
 	return (
 		<div className='main-page'>
-			<Typography.Title level={2}>Основная информация</Typography.Title>
+			<Typography.Title level={1}>Основная информация</Typography.Title>
 			<div className='page-wrapper'>
 				<div className='main-page__user'>
 					<Avatar size={64} icon={<UserOutlined />} />
