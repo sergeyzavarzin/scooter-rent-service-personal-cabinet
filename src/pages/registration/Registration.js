@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, notification } from 'antd';
+
+import { dealCategory } from '../../globals/constants/dealCategory';
 
 import { registration } from './Registration.service';
 
@@ -7,6 +9,15 @@ import './Registration.scss';
 
 const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [category, setCategory] = useState(dealCategory.b2c);
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const category = urlParams.get('offer');
+		if (category && category.length) {
+			setCategory(dealCategory[category]);
+		}
+	}, []);
 
 	const onFinish = async values => {
 		setIsLoading(true);
@@ -18,6 +29,7 @@ const Registration = () => {
 				lastName: values.lastName,
 				patronymic: values.patronymic,
 				password: values.password,
+				...(category.length ? { dealCategory: category } : {}),
 			});
 			const { formUrl = null } = registrationResponse;
 			if (formUrl) {
@@ -27,7 +39,7 @@ const Registration = () => {
 				});
 				setTimeout(() => {
 					window.location.href = formUrl;
-				}, 5000);
+				}, 4000);
 			} else {
 				notification.open({
 					message: 'Ошибка.',
@@ -108,6 +120,7 @@ const Registration = () => {
 						type='primary'
 						htmlType='submit'
 						loading={isLoading}
+						size='large'
 						className='registration-form__button'
 					>
 						Перейти к оплате

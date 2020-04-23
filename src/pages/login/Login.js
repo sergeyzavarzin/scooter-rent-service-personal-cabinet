@@ -89,6 +89,7 @@ class Login extends React.Component {
 							<Button
 								type='primary'
 								htmlType='submit'
+								size='large'
 								className='login-form__button'
 								loading={isLoading}
 							>
