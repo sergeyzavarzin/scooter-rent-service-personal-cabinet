@@ -33,8 +33,13 @@ const SubscriptionStore = types
 			}
 		});
 
+		const setStatus = status => {
+			store.status = status;
+		};
+
 		return {
 			fetchSubscriptionInfo,
+			setStatus,
 		};
 	});
 

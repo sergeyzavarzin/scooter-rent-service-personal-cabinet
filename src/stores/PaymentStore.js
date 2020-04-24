@@ -25,8 +25,18 @@ const PaymentStore = types
 			}
 		});
 
+		const getStatus = status => {
+			switch (status) {
+				case 'SUCCESS':
+					return 'Успешно';
+				default:
+					return 'Неуспешно';
+			}
+		};
+
 		return {
 			fetchPaymentList,
+			getStatus,
 		};
 	});
 

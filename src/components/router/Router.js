@@ -2,7 +2,6 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import MainPage from '../../pages/main';
 import Login from '../../pages/login';
 import Registration from '../../pages/registration';
 import FailPayment from '../../pages/failPayment';
@@ -17,8 +16,7 @@ const Router = ({
 }) => {
 	return isUserLogged ? (
 		<Switch>
-			<Route path={['/', '/main']} exact component={MainPage} />
-			<Route path='/subscription' exact component={Subscription} />
+			<Route path={['/', '/subscription']} exact component={Subscription} />
 			<Route path='/help' exact component={Help} />
 			<Redirect to='/' />
 		</Switch>

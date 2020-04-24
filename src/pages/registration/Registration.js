@@ -7,6 +7,8 @@ import { registration } from './Registration.service';
 
 import './Registration.scss';
 
+const passwordPattern = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
+
 const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [category, setCategory] = useState(dealCategory.b2c);
@@ -49,7 +51,10 @@ const Registration = () => {
 		} catch (e) {
 			notification.open({
 				message: 'Ошибка.',
-				description: 'Попробуйте повторить ваш запрос позднее.',
+				description:
+					typeof e.response.data.message === 'string'
+						? e.response.data.message
+						: 'Попробуйте повторить ваш запрос позднее.',
 			});
 		} finally {
 			setIsLoading(false);
@@ -100,20 +105,59 @@ const Registration = () => {
 					</Form.Item>
 					<Form.Item
 						name='password'
-						rules={[{ required: true, message: 'Придумайте пароль' }]}
+						rules={[
+							{ required: true, message: 'Придумайте пароль' },
+							{ pattern: passwordPattern, message: 'Слабый пароль.' },
+						]}
+						hasFeedback
 					>
 						<Input.Password placeholder='Придумайте пароль' />
 					</Form.Item>
 					<Form.Item
 						name='retryPassword'
-						rules={[{ required: true, message: 'Укажите пароль повторно' }]}
+						rules={[
+							{ required: true, message: 'Укажите пароль повторно' },
+							({ getFieldValue }) => ({
+								validator(rule, value) {
+									if (!value || getFieldValue('password') === value) {
+										return Promise.resolve();
+									}
+									return Promise.reject('Пароли не совпадают');
+								},
+							}),
+						]}
+						hasFeedback
 					>
 						<Input.Password placeholder='Повторите пароль' />
 					</Form.Item>
-					<Form.Item>
-						<Checkbox style={{ textAlign: 'left', fontSize: 11 }}>
-							Я согласен с{' '}
-							<a href='/agreement'>условиями использования сервиса</a>.
+					<Form.Item
+						name='agreement'
+						valuePropName='checked'
+						rules={[
+							{
+								required: true,
+								message: 'Дайте согласие на обработку данных',
+							},
+						]}
+					>
+						<Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
+							Даю согласие на{' '}
+							<a
+								href='https://www.moysamokat.ru/oferta'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								обработку персональных данных
+							</a>{' '}
+							и соглашаюсь с{' '}
+							<a
+								href='https://www.moysamokat.ru/oferta'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								условиями использования сервиса
+							</a>
+							.
 						</Checkbox>
 					</Form.Item>
 					<Button

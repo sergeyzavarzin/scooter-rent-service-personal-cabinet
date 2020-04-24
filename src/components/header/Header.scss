@@ -1,5 +1,14 @@
+@import '../../globals/styles/variables';
+
 .header {
   color: #fff;
+  z-index: 999;
+  padding: 0 20px;
+  position: relative;
+
+  @media #{$desktopSmall} {
+    padding: 0 50px;
+  }
 
   &__wrapper {
     display: flex;
@@ -11,18 +20,47 @@
     font-weight: bold;
     font-size: 20px;
     color: #fff;
+    margin-left: 15px;
   }
 
   &__logo-img {
     width: 50px;
   }
 
-  &__left {
+  &__menu {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 64px;
+    transition: .5s;
+    transform: translateX(-100%);
+    z-index: -1;
 
+    @media #{$desktopSmall} {
+      position: relative;
+      width: auto;
+      left: auto;
+      transform: none !important;
+      top: auto;
+      z-index: auto;
+    }
+
+    &--visible {
+      transform: translateX(0);
+    }
+  }
+
+  &__menu-toggle {
+    @media #{$desktopSmall} {
+      display: none;
+    }
+  }
+
+  &__left {
+    display: flex;
   }
 
   &__center {
-
   }
 
   &__right {

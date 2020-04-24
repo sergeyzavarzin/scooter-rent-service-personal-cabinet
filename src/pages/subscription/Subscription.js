@@ -3,32 +3,38 @@ import { inject, observer } from 'mobx-react';
 import { Button, notification, Typography, Table, Card } from 'antd';
 import moment from 'moment';
 
-import { disableSubscription } from '../../globals/services/disableSubscription';
+import { setSubscriptionStatus } from '../../globals/services/setSubscriptionStatus';
 
 import './Subscription.scss';
 
-const gridStyle = {
-	width: '25%',
-	textAlign: 'center',
-};
-
 const Subscription = ({
 	store: {
-		paymentStore: { items: payments },
+		isMobile,
+		paymentStore: { items: payments, getStatus: getPaymentStatus },
 		userStore: { subscriptionId },
-		subscriptionStore: { getStatus, nextPaymentDate, month, status },
+		subscriptionStore: { getStatus, nextPaymentDate, month, status, setStatus },
 	},
 }) => {
-	const [isActivationLoading, setIsActivationLoading] = useState(false);
+	const [isSubscriptionStatusLoading, setSubscriptionStatusLoading] = useState(
+		false
+	);
 
-	const handleDisableSubscription = () => {
-		setIsActivationLoading(true);
-		disableSubscription()
-			.then(() => {
+	const gridStyle = {
+		width: isMobile ? '100%' : '25%',
+		textAlign: 'center',
+	};
+
+	const handleSetSubscriptionStatus = () => {
+		setSubscriptionStatusLoading(true);
+		setSubscriptionStatus(status === 'ACTIVE' ? 'DISABLED' : 'ACTIVE')
+			.then(newStatus => {
+				setStatus(newStatus);
 				notification.open({
 					message: 'Успешно.',
 					description:
-						'Подписка отключена. Вы можете активировать ее повторно в любой момент',
+						status === 'ACTIVE'
+							? 'Подписка отключена. В ближайшее время с вами свяжется наш менеджер.'
+							: 'Ваша подписка снова активна.',
 				});
 			})
 			.catch(() => {
@@ -38,7 +44,7 @@ const Subscription = ({
 						'Не удалсь выполнить операцию. Попробуйте повторить ваш запрос позднее.',
 				});
 			})
-			.finally(() => setIsActivationLoading(false));
+			.finally(() => setSubscriptionStatusLoading(false));
 	};
 
 	const columns = [
@@ -66,7 +72,7 @@ const Subscription = ({
 			title: 'Статус',
 			dataIndex: 'status',
 			key: 'status',
-			render: value => value,
+			render: value => getPaymentStatus(value),
 		},
 		{
 			title: 'Карта',
@@ -86,17 +92,17 @@ const Subscription = ({
 						style={{ marginBottom: 30 }}
 					>
 						<Card.Grid style={gridStyle}>
-							ID подписки: <b>{subscriptionId}</b>
+							ID подписки: <br /> <b>{subscriptionId}</b>
 						</Card.Grid>
 						<Card.Grid style={gridStyle}>
-							Cтатус подписки: <b>{getStatus}</b>
+							Cтатус подписки: <br /> <b>{getStatus}</b>
 						</Card.Grid>
 						<Card.Grid style={gridStyle}>
-							Ваша подпписка активна до:{' '}
+							Ваша подпписка активна до: <br />
 							<b>{moment(nextPaymentDate).format('DD.MM.YYYY')}</b>
 						</Card.Grid>
 						<Card.Grid style={gridStyle}>
-							Месяц использования: <b>{month}</b>
+							Месяц использования: <br /> <b>{month}</b>
 						</Card.Grid>
 						<Card.Grid
 							hoverable={false}
@@ -105,8 +111,8 @@ const Subscription = ({
 							<Button
 								type='primary'
 								size='large'
-								onClick={handleDisableSubscription}
-								loading={isActivationLoading}
+								onClick={handleSetSubscriptionStatus}
+								loading={isSubscriptionStatusLoading}
 							>
 								{status === 'ACTIVE'
 									? 'Приостановить подписку'
@@ -119,6 +125,10 @@ const Subscription = ({
 						columns={columns}
 						dataSource={payments}
 						rowKey={record => record.orderNumber}
+						scroll={{
+							x: 1000,
+							y: 300,
+						}}
 					/>
 				</div>
 			</div>

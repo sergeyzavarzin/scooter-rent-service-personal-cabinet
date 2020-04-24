@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { notification, Spin, Typography } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { notification, Spin, Typography, Button } from 'antd';
 
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
 
-const SuccessPayment = () => {
+const SuccessPayment = ({ history: { push } }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [status, setStatus] = useState(null);
 
@@ -32,10 +33,17 @@ const SuccessPayment = () => {
 		<Spin size='large' />
 	) : (
 		<>
-			<Typography.Title level={1}>Платеж произведен успешно</Typography.Title>
-			{status && <p>{status}</p>}
+			<Typography.Title level={1} style={{ textAlign: 'center' }}>
+				Платеж произведен успешно
+			</Typography.Title>
+			<div style={{ textAlign: 'center' }}>
+				{status && <p>{status}</p>}
+				<Button size='large' type='link' onClick={() => push('/')}>
+					Войти в личный кабинет
+				</Button>
+			</div>
 		</>
 	);
 };
 
-export default SuccessPayment;
+export default withRouter(SuccessPayment);

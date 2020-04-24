@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { notification, Typography, Spin } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { notification, Typography, Spin, Button } from 'antd';
 
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
 
-const FailPayment = () => {
+const FailPayment = ({ history: { push } }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [status, setStatus] = useState(null);
 
@@ -32,12 +33,17 @@ const FailPayment = () => {
 		<Spin size='large' />
 	) : (
 		<>
-			<Typography.Title level={1}>
+			<Typography.Title level={1} style={{ textAlign: 'center' }}>
 				Не удалось произвести платеж
 			</Typography.Title>
-			{status && <p>{status}</p>}
+			<div style={{ textAlign: 'center' }}>
+				{status && <p>{status}</p>}
+				<Button size='large' type='link' onClick={() => push('/')}>
+					Вернуться на гланую
+				</Button>
+			</div>
 		</>
 	);
 };
 
-export default FailPayment;
+export default withRouter(FailPayment);

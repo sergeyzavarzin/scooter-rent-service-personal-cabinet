@@ -33,3 +33,11 @@ h1.ant-typography {
   font-weight: bold;
   color: #fff;
 }
+
+.site-layout-background {
+  min-height: 360px;
+
+  @media #{$desktopSmall} {
+    padding: 24px;
+  }
+}

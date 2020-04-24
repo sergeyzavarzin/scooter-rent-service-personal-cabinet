@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
+import classNames from 'classnames';
 import { Layout, Avatar, Button, Menu, Popover } from 'antd';
 import {
-	UserOutlined,
-	HomeOutlined,
 	BellOutlined,
 	InfoCircleOutlined,
+	MenuOutlined,
+	CloseOutlined,
 } from '@ant-design/icons';
+
+import { logout } from '../../utils/logout';
 
 import Logo from './img/logo-light.svg';
 
@@ -15,27 +18,46 @@ import './Header.scss';
 
 const Header = ({
 	store: {
+		isMobile,
 		userStore: { isUserLogged, fullName, initials },
 	},
 	history,
 }) => {
+	const [selectedKey, setSelectedKey] = useState(history.location.pathname);
+	const [isIsMenuVisible, setIsMenuVisible] = useState(false);
+
 	const content = (
 		<>
-			<Button
-				type='danger'
-				onClick={() => {
-					localStorage.clear();
-					window.location.href = '/login';
-				}}
-			>
+			<Button type='danger' onClick={() => logout()}>
 				Выйти
 			</Button>
 		</>
 	);
+
+	useEffect(() => {
+		const path = history.location.pathname;
+		setSelectedKey(path.length ? path : 'subscription');
+	}, [history.location.pathname]);
+
+	const handleMenuClick = ({ key }) => {
+		setIsMenuVisible(false);
+		history.push(key);
+	};
+
 	return (
 		<Layout.Header className='header'>
 			<div className='header__wrapper'>
 				<div className='header__left'>
+					<div
+						onClick={() => setIsMenuVisible(!isIsMenuVisible)}
+						className='header__menu-toggle'
+					>
+						{isIsMenuVisible ? (
+							<CloseOutlined style={{ fontSize: 20 }} />
+						) : (
+							<MenuOutlined style={{ fontSize: 20 }} />
+						)}
+					</div>
 					<Link to='/' className='header__logo'>
 						<img src={Logo} alt='Мой Самокат' className='header__logo-img' />
 					</Link>
@@ -44,21 +66,17 @@ const Header = ({
 					{isUserLogged && (
 						<Menu
 							theme='dark'
-							mode='horizontal'
-							defaultSelectedKeys={[history.location.pathname.slice(1)]}
+							mode={isMobile ? 'vertical' : 'horizontal'}
+							defaultSelectedKeys={[selectedKey]}
+							className={classNames('header__menu', {
+								'header__menu--visible': isIsMenuVisible,
+							})}
 						>
-							<Menu.Item key='main' onClick={() => history.push('main')}>
-								<HomeOutlined />
-								Основное
-							</Menu.Item>
-							<Menu.Item
-								key='subscription'
-								onClick={() => history.push('subscription')}
-							>
+							<Menu.Item key='/subscription' onClick={handleMenuClick}>
 								<BellOutlined />
 								Подписка
 							</Menu.Item>
-							<Menu.Item key='help' onClick={() => history.push('help')}>
+							<Menu.Item key='/help' onClick={handleMenuClick}>
 								<InfoCircleOutlined />
 								Помощь
 							</Menu.Item>
