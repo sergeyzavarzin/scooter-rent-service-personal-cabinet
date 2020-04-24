@@ -54,9 +54,17 @@ const AppStore = types
 			}
 		};
 
+		const setIsMobile = () => {
+			const isMobile = !window.matchMedia('(min-width: 767px)').matches;
+			if (store.isMobile !== isMobile) {
+				store.isMobile = isMobile;
+			}
+		};
+
 		return {
 			afterCreate,
 			setAppLoaded,
+			setIsMobile,
 		};
 	});
 

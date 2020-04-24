@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Layout } from 'antd';
 
@@ -11,9 +11,16 @@ const disableNav = true;
 
 const AppLayout = ({
 	store: {
+		setIsMobile,
 		userStore: { isUserLogged },
 	},
 }) => {
+	useEffect(() => {
+		window.addEventListener('resize', setIsMobile);
+		return () => {
+			window.removeEventListener('resize', setIsMobile);
+		};
+	}, [setIsMobile]);
 	return (
 		<div className='app'>
 			<Layout style={{ minHeight: '100vh' }}>

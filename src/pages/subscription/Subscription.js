@@ -12,15 +12,27 @@ const Subscription = ({
 		isMobile,
 		paymentStore: { items: payments, getStatus: getPaymentStatus },
 		userStore: { subscriptionId },
-		subscriptionStore: { getStatus, nextPaymentDate, month, status, setStatus },
+		subscriptionStore: {
+			getStatus,
+			nextPaymentDate,
+			month,
+			status,
+			setStatus,
+			scooterInfo,
+		},
 	},
 }) => {
 	const [isSubscriptionStatusLoading, setSubscriptionStatusLoading] = useState(
 		false
 	);
 
-	const gridStyle = {
+	const topGridStyle = {
 		width: isMobile ? '100%' : '25%',
+		textAlign: 'center',
+	};
+
+	const midGridStyle = {
+		width: isMobile ? '100%' : '33%',
 		textAlign: 'center',
 	};
 
@@ -91,18 +103,28 @@ const Subscription = ({
 						title={<b>Информация о подписке:</b>}
 						style={{ marginBottom: 30 }}
 					>
-						<Card.Grid style={gridStyle}>
+						<Card.Grid style={topGridStyle}>
 							ID подписки: <br /> <b>{subscriptionId}</b>
 						</Card.Grid>
-						<Card.Grid style={gridStyle}>
+						<Card.Grid style={topGridStyle}>
 							Cтатус подписки: <br /> <b>{getStatus}</b>
 						</Card.Grid>
-						<Card.Grid style={gridStyle}>
+						<Card.Grid style={topGridStyle}>
 							Ваша подпписка активна до: <br />
 							<b>{moment(nextPaymentDate).format('DD.MM.YYYY')}</b>
 						</Card.Grid>
-						<Card.Grid style={gridStyle}>
+						<Card.Grid style={topGridStyle}>
 							Месяц использования: <br /> <b>{month}</b>
+						</Card.Grid>
+						<Card.Grid style={midGridStyle}>
+							ID самоката: <br /> <b>{scooterInfo.id}</b>
+						</Card.Grid>
+						<Card.Grid style={midGridStyle}>
+							Модель самоката: <br /> <b>{scooterInfo.name}</b>
+						</Card.Grid>
+						<Card.Grid style={midGridStyle}>
+							Цвет самоката: <br />{' '}
+							<b className='capitalize'>{scooterInfo.color}</b>
 						</Card.Grid>
 						<Card.Grid
 							hoverable={false}
