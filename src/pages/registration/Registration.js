@@ -21,7 +21,7 @@ const Registration = () => {
 		}
 	}, []);
 
-	const onFinish = async values => {
+	const onFinish = async (values) => {
 		setIsLoading(true);
 		try {
 			const registrationResponse = await registration({
@@ -61,7 +61,7 @@ const Registration = () => {
 		}
 	};
 
-	const onFinishFailed = errorInfo => console.log('Failed:', errorInfo);
+	const onFinishFailed = (errorInfo) => console.log('Failed:', errorInfo);
 
 	return (
 		<div className='registration-page'>
@@ -151,7 +151,7 @@ const Registration = () => {
 							</a>{' '}
 							и соглашаюсь с{' '}
 							<a
-								href='https://www.moysamokat.ru/oferta'
+								href='https://www.moysamokat.ru/privacy-policy'
 								target='_blank'
 								rel='noopener noreferrer'
 							>
