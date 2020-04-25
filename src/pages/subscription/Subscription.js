@@ -39,7 +39,7 @@ const Subscription = ({
 	const handleSetSubscriptionStatus = () => {
 		setSubscriptionStatusLoading(true);
 		setSubscriptionStatus(status === 'ACTIVE' ? 'DISABLED' : 'ACTIVE')
-			.then(newStatus => {
+			.then((newStatus) => {
 				setStatus(newStatus);
 				notification.open({
 					message: 'Успешно.',
@@ -64,33 +64,33 @@ const Subscription = ({
 			title: '№ заказа',
 			dataIndex: 'orderNumber',
 			key: 'orderNumber',
-			render: value => value,
+			render: (value) => value,
 			width: 100,
 		},
 		{
 			title: 'Дата',
 			dataIndex: 'createDateTime',
 			key: 'createDateTime',
-			render: value => moment(value).format('DD.MM.YYYY'),
+			render: (value) => moment(value).format('DD.MM.YYYY'),
 			width: 150,
 		},
 		{
 			title: 'Сумма',
 			dataIndex: 'amount',
 			key: 'amount',
-			render: value => value / 100,
+			render: (value) => value / 100,
 		},
 		{
 			title: 'Статус',
 			dataIndex: 'status',
 			key: 'status',
-			render: value => getPaymentStatus(value),
+			render: (value) => getPaymentStatus(value),
 		},
 		{
 			title: 'Карта',
 			dataIndex: 'cardInfo',
 			key: 'cardInfo',
-			render: value => JSON.parse(value).pan,
+			render: (value) => JSON.parse(value).pan,
 		},
 	];
 
@@ -116,16 +116,25 @@ const Subscription = ({
 						<Card.Grid style={topGridStyle}>
 							Месяц использования: <br /> <b>{month}</b>
 						</Card.Grid>
-						<Card.Grid style={midGridStyle}>
-							ID самоката: <br /> <b>{scooterInfo.id}</b>
-						</Card.Grid>
-						<Card.Grid style={midGridStyle}>
-							Модель самоката: <br /> <b>{scooterInfo.name}</b>
-						</Card.Grid>
-						<Card.Grid style={midGridStyle}>
-							Цвет самоката: <br />{' '}
-							<b className='capitalize'>{scooterInfo.color}</b>
-						</Card.Grid>
+						{scooterInfo ? (
+							<>
+								<Card.Grid style={midGridStyle}>
+									ID самоката: <br /> <b>{scooterInfo.id}</b>
+								</Card.Grid>
+								<Card.Grid style={midGridStyle}>
+									Модель самоката: <br /> <b>{scooterInfo.name}</b>
+								</Card.Grid>
+								<Card.Grid style={midGridStyle}>
+									Цвет самоката: <br />{' '}
+									<b className='capitalize'>{scooterInfo.color}</b>
+								</Card.Grid>
+							</>
+						) : (
+							<Card.Grid style={{ width: '100%', textAlign: 'center' }}>
+								Информация о самокате будет доступна после согласования доставки
+								с менеждером.
+							</Card.Grid>
+						)}
 						<Card.Grid
 							hoverable={false}
 							style={{ width: '100%', textAlign: 'center' }}
@@ -146,7 +155,7 @@ const Subscription = ({
 					<Table
 						columns={columns}
 						dataSource={payments}
-						rowKey={record => record.orderNumber}
+						rowKey={(record) => record.orderNumber}
 						scroll={{
 							x: 1000,
 							y: 300,

@@ -8,7 +8,7 @@ const SubscriptionStore = types
 		scooter: types.maybeNull(types.string),
 		month: types.maybeNull(types.number),
 	})
-	.views(self => ({
+	.views((self) => ({
 		get getStatus() {
 			switch (self.status) {
 				case 'ACTIVE':
@@ -39,15 +39,11 @@ const SubscriptionStore = types
 				);
 				return { id, name, color };
 			} catch (e) {
-				return {
-					id: '',
-					name: '',
-					color: '',
-				};
+				return null;
 			}
 		},
 	}))
-	.actions(self => {
+	.actions((self) => {
 		const store = self;
 
 		const fetchSubscriptionInfo = flow(function* fetch() {
@@ -62,7 +58,7 @@ const SubscriptionStore = types
 			}
 		});
 
-		const setStatus = status => {
+		const setStatus = (status) => {
 			store.status = status;
 		};
 
