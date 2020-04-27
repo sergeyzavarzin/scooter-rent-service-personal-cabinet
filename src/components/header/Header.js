@@ -48,16 +48,19 @@ const Header = ({
 		<Layout.Header className='header'>
 			<div className='header__wrapper'>
 				<div className='header__left'>
-					<div
-						onClick={() => setIsMenuVisible(!isIsMenuVisible)}
-						className='header__menu-toggle'
-					>
-						{isIsMenuVisible ? (
-							<CloseOutlined style={{ fontSize: 20 }} />
-						) : (
-							<MenuOutlined style={{ fontSize: 20 }} />
-						)}
-					</div>
+					{isUserLogged && (
+						<button
+							type='button'
+							onClick={() => setIsMenuVisible(!isIsMenuVisible)}
+							className='header__menu-toggle'
+						>
+							{isIsMenuVisible ? (
+								<CloseOutlined style={{ fontSize: 20 }} />
+							) : (
+								<MenuOutlined style={{ fontSize: 20 }} />
+							)}
+						</button>
+					)}
 					<Link to='/' className='header__logo'>
 						<img src={Logo} alt='Мой Самокат' className='header__logo-img' />
 					</Link>

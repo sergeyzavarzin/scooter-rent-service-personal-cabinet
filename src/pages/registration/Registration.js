@@ -12,12 +12,17 @@ const passwordPattern = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?
 const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [category, setCategory] = useState(dealCategory.b2c);
+	const [discountCode, setDiscountCode] = useState('');
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const category = urlParams.get('offer');
+		const discountCodeValue = urlParams.get('discountCode');
 		if (category && category.length) {
 			setCategory(dealCategory[category]);
+		}
+		if (discountCodeValue && discountCodeValue.length) {
+			setDiscountCode(discountCodeValue);
 		}
 	}, []);
 
@@ -31,6 +36,7 @@ const Registration = () => {
 				lastName: values.lastName,
 				patronymic: values.patronymic,
 				password: values.password,
+				discountCode,
 				...(category.length ? { dealCategory: category } : {}),
 			});
 			const { formUrl = null } = registrationResponse;
@@ -65,6 +71,7 @@ const Registration = () => {
 
 	return (
 		<div className='registration-page'>
+			{console.log(category, discountCode)}
 			<div className='registration-form'>
 				<h1>Регистрация</h1>
 				<Form

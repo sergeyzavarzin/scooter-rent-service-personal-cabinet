@@ -51,6 +51,10 @@
   }
 
   &__menu-toggle {
+    background: transparent;
+    border: none;
+    outline: none;
+
     @media #{$desktopSmall} {
       display: none;
     }
