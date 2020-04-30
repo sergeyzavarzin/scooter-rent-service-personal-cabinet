@@ -1,37 +1,30 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Form, Input, Button, notification } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 
-import { login } from '../../globals/services/login';
+import { forgot } from '../../globals/services/forgot';
 
-import './Login.scss';
+import './Forgot.scss';
 
-class Login extends React.Component {
+class Forgot extends React.Component {
 	state = {
 		isLoading: false,
 	};
 
 	onFinish = (values) => {
 		this.setState({ isLoading: true });
-		login(values.email, values.password)
-			.then((result) => {
-				localStorage.setItem('token', result.accessToken);
-				localStorage.setItem(
-					'userInfo',
-					JSON.stringify({
-						email: result.email,
-						phone: result.phone,
-						lastName: result.lastName,
-						firstName: result.firstName,
-						patronymic: result.patronymic,
-						subscriptionId: result.subscriptionId,
-					})
-				);
-				window.location.href = '/';
+		forgot(values.email)
+			.then(() => {
+				notification.open({
+					message: 'Успешно.',
+					description: 'Ссылка для смены пароля отправлена вам на почту.',
+				});
+				setTimeout(() => {
+					this.props.history.push('/');
+				}, 3000);
 			})
 			.catch((error) => {
-				this.setState({ isLoading: false });
 				if (
 					error.response.data.message &&
 					typeof error.response.data.message === 'string'
@@ -43,7 +36,8 @@ class Login extends React.Component {
 							'Попробуйте повторить ваш запрос позднее.',
 					});
 				}
-			});
+			})
+			.finally(() => this.setState({ isLoading: false }));
 	};
 
 	render() {
@@ -51,8 +45,8 @@ class Login extends React.Component {
 		return (
 			<div className='login-page'>
 				<div className='form'>
-					<h1>Вход</h1>
-					<Form name='login' className='form__form' onFinish={this.onFinish}>
+					<h1>Сменить пароль</h1>
+					<Form name='login' onFinish={this.onFinish} className='form__form'>
 						<Form.Item
 							name='email'
 							rules={[
@@ -71,30 +65,19 @@ class Login extends React.Component {
 								placeholder='E-mail'
 							/>
 						</Form.Item>
-						<Form.Item
-							name='password'
-							rules={[{ required: true, message: 'Введите пароль' }]}
-						>
-							<Input.Password
-								prefix={<LockOutlined className='site-form-item-icon' />}
-								type='password'
-								placeholder='Пароль'
-							/>
-						</Form.Item>
 						<Form.Item>
 							<Button
+								size='large'
 								type='primary'
 								htmlType='submit'
-								size='large'
-								className='form__button'
 								loading={isLoading}
+								className='form__button'
 							>
-								Войти
+								Сменить пароль
 							</Button>
 						</Form.Item>
-						<div className='form__links'>
-							<Link to='/forgot'>Я забыл пароль</Link>
-							<Link to='/registration'>Регистрация</Link>
+						<div className='form__links form__links--centered'>
+							<Link to='/'>Назад</Link>
 						</div>
 					</Form>
 				</div>
@@ -103,4 +86,4 @@ class Login extends React.Component {
 	}
 }
 
-export default withRouter(Login);
+export default withRouter(Forgot);

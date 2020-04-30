@@ -8,6 +8,8 @@ import FailPayment from '../../pages/failPayment';
 import SuccessPayment from '../../pages/successPayment';
 import Subscription from '../../pages/subscription';
 import Help from '../../pages/help';
+import Forgot from '../../pages/forgot';
+import ChangePassword from '../../pages/changePassword/ChangePassword';
 
 const Router = ({
 	store: {
@@ -23,6 +25,8 @@ const Router = ({
 	) : (
 		<Switch>
 			<Route path={['/', '/login']} exact component={Login} />
+			<Route path='/forgot' exact component={Forgot} />
+			<Route path='/change-password' exact component={ChangePassword} />
 			<Route path='/registration' exact component={Registration} />
 			<Route path='/failPayment' exact component={FailPayment} />
 			<Route path='/successPayment' exact component={SuccessPayment} />

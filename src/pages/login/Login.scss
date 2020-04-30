@@ -5,16 +5,12 @@
   height: 60vh;
 }
 
-.login-form {
+.form {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
   width: 320px;
   text-align: center;
-
-  &__form {
-    //margin: 0 auto;
-  }
 
   &__button {
     width: 100%;
@@ -24,5 +20,9 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+
+    &--centered {
+      justify-content: center;
+    }
   }
 }

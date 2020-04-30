@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, notification, Typography, Table, Card } from 'antd';
+import {
+	Button,
+	notification,
+	Typography,
+	Table,
+	Card,
+	Popconfirm,
+} from 'antd';
 import moment from 'moment';
 
 import { setSubscriptionStatus } from '../../globals/services/setSubscriptionStatus';
@@ -10,7 +17,11 @@ import './Subscription.scss';
 const Subscription = ({
 	store: {
 		isMobile,
-		paymentStore: { items: payments, getStatus: getPaymentStatus },
+		paymentStore: {
+			items: payments,
+			getStatus: getPaymentStatus,
+			isLoading: isPaymentsDataLoading,
+		},
 		userStore: { subscriptionId },
 		subscriptionStore: {
 			getStatus,
@@ -135,32 +146,45 @@ const Subscription = ({
 								с менеждером.
 							</Card.Grid>
 						)}
-						<Card.Grid
-							hoverable={false}
-							style={{ width: '100%', textAlign: 'center' }}
-						>
-							<Button
-								type='primary'
-								size='large'
-								onClick={handleSetSubscriptionStatus}
-								loading={isSubscriptionStatusLoading}
-							>
-								{status === 'ACTIVE'
-									? 'Приостановить подписку'
-									: 'Активировать подписку'}
-							</Button>
-						</Card.Grid>
 					</Card>
 					<Typography.Title level={3}>Информация о платежах</Typography.Title>
 					<Table
 						columns={columns}
 						dataSource={payments}
 						rowKey={(record) => record.orderNumber}
+						loading={isPaymentsDataLoading}
 						scroll={{
-							x: 1000,
-							y: 300,
+							x: isMobile ? 1000 : null,
+							y: isMobile ? 300 : null,
 						}}
 					/>
+					<Typography.Title level={3}>Настройки</Typography.Title>
+					{status === 'ACTIVE' ? (
+						<Popconfirm
+							okText='Да'
+							cancelText='Нет'
+							title='Вы уверены?'
+							placement={isMobile ? 'top' : 'rightBottom'}
+							onConfirm={handleSetSubscriptionStatus}
+						>
+							<Button
+								type='primary'
+								size='large'
+								loading={isSubscriptionStatusLoading}
+							>
+								Приостановить подписку
+							</Button>
+						</Popconfirm>
+					) : (
+						<Button
+							type='primary'
+							size='large'
+							loading={isSubscriptionStatusLoading}
+							onClick={handleSetSubscriptionStatus}
+						>
+							Активировать подписку
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, notification } from 'antd';
 
 import { dealCategory } from '../../globals/constants/dealCategory';
+import { passwordPattern } from '../../constants/passwordPattern';
 
 import { registration } from './Registration.service';
 
 import './Registration.scss';
-
-const passwordPattern = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
 
 const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
