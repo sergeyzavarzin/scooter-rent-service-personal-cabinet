@@ -36,8 +36,8 @@ const AppStore = types
 			!window.matchMedia('(min-width: 768px)').matches
 		),
 	})
-	.views(self => ({}))
-	.actions(self => {
+	.views((self) => ({}))
+	.actions((self) => {
 		const store = self;
 
 		const setAppLoaded = () => {
@@ -47,6 +47,15 @@ const AppStore = types
 		const afterCreate = async () => {
 			axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 			axios.defaults.headers.post['Content-Type'] = 'application/json';
+			axios.interceptors.response.use(
+				(response) => response,
+				(error) => {
+					if (error.response.status === 401) {
+						localStorage.clear();
+						window.location.href = '/';
+					}
+				}
+			);
 			if (token.length) {
 				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				await store.subscriptionStore.fetchSubscriptionInfo();
