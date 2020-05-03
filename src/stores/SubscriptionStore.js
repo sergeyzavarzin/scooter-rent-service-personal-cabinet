@@ -1,12 +1,12 @@
-import { flow, types } from 'mobx-state-tree';
+import { flow, getParent, types } from 'mobx-state-tree';
 import axios from 'axios';
+import moment from 'moment';
 
 const SubscriptionStore = types
 	.model('SubscriptionStore', {
 		nextPaymentDate: types.maybeNull(types.string),
 		status: types.maybeNull(types.string),
 		scooter: types.maybeNull(types.string),
-		month: types.maybeNull(types.number),
 	})
 	.views((self) => ({
 		get getStatus() {
@@ -42,6 +42,13 @@ const SubscriptionStore = types
 				return null;
 			}
 		},
+		get month() {
+			const start = moment(getParent(self).userStore.registrationDate).toDate();
+			const end = moment().toDate();
+			const diff = moment(end).diff(start, 'M', true);
+			const month = Math.trunc(diff);
+			return month || 1;
+		},
 	}))
 	.actions((self) => {
 		const store = self;
@@ -51,7 +58,6 @@ const SubscriptionStore = types
 				const response = yield axios.get('/subscription/info');
 				store.nextPaymentDate = response.data.nextPaymentDate;
 				store.status = response.data.status;
-				store.month = response.data.month;
 				store.scooter = response.data.scooter;
 			} catch (err) {
 				console.log(err);

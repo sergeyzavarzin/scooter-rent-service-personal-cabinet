@@ -8,8 +8,9 @@ const UserStore = types
 		patronymic: types.optional(types.string, ''),
 		email: types.optional(types.string, ''),
 		subscriptionId: types.optional(types.string, ''),
+		registrationDate: types.optional(types.string, ''),
 	})
-	.views(self => ({
+	.views((self) => ({
 		get initials() {
 			return `${self.firstName.slice(0, 1)} ${self.lastName.slice(0, 1)}`;
 		},
@@ -23,7 +24,7 @@ const UserStore = types
 			return !!self.token.length;
 		},
 	}))
-	.actions(self => {
+	.actions((self) => {
 		const store = self;
 
 		const fetchUser = () => {

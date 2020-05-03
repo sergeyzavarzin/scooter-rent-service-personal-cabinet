@@ -4,6 +4,7 @@ import axios from 'axios';
 import UserStore from './UserStore';
 import SubscriptionStore from './SubscriptionStore';
 import PaymentStore from './PaymentStore';
+import CardStore from './CardStore';
 
 const token = localStorage.getItem('token') || '';
 const userInfo = localStorage.getItem('userInfo')
@@ -16,6 +17,7 @@ const {
 	patronymic = '',
 	email = '',
 	subscriptionId = '',
+	registrationDate = '',
 } = userInfo;
 
 const AppStore = types
@@ -28,9 +30,11 @@ const AppStore = types
 			patronymic,
 			email,
 			subscriptionId,
+			registrationDate,
 		}),
 		subscriptionStore: types.optional(SubscriptionStore, {}),
 		paymentStore: types.optional(PaymentStore, {}),
+		cardStore: types.optional(CardStore, {}),
 		isMobile: types.optional(
 			types.boolean,
 			!window.matchMedia('(min-width: 768px)').matches
@@ -60,6 +64,7 @@ const AppStore = types
 				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				await store.subscriptionStore.fetchSubscriptionInfo();
 				await store.paymentStore.fetchPaymentList();
+				await store.cardStore.fetchCards();
 			}
 		};
 

@@ -7,6 +7,7 @@ const Payment = types.model('Payment', {
 	amount: types.number,
 	cardInfo: types.string,
 	status: types.string,
+	description: types.optional(types.string, ''),
 });
 
 const PaymentStore = types

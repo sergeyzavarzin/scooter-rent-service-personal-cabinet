@@ -26,6 +26,7 @@ class Login extends React.Component {
 						firstName: result.firstName,
 						patronymic: result.patronymic,
 						subscriptionId: result.subscriptionId,
+						registrationDate: result.registrationDate,
 					})
 				);
 				window.location.href = '/';

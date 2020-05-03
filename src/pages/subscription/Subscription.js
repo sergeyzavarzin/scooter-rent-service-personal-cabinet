@@ -1,27 +1,17 @@
 import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import {
-	Button,
-	notification,
-	Typography,
-	Table,
-	Card,
-	Popconfirm,
-} from 'antd';
+import { Button, notification, Typography, Card, Popconfirm } from 'antd';
 import moment from 'moment';
 
 import { setSubscriptionStatus } from '../../globals/services/setSubscriptionStatus';
 
 import './Subscription.scss';
+import Payments from '../../components/payments/Payments';
+import Cards from '../../components/cards/Cards';
 
 const Subscription = ({
 	store: {
 		isMobile,
-		paymentStore: {
-			items: payments,
-			getStatus: getPaymentStatus,
-			isLoading: isPaymentsDataLoading,
-		},
 		userStore: { subscriptionId },
 		subscriptionStore: {
 			getStatus,
@@ -70,41 +60,6 @@ const Subscription = ({
 			.finally(() => setSubscriptionStatusLoading(false));
 	};
 
-	const columns = [
-		{
-			title: '№ заказа',
-			dataIndex: 'orderNumber',
-			key: 'orderNumber',
-			render: (value) => value,
-			width: 100,
-		},
-		{
-			title: 'Дата',
-			dataIndex: 'createDateTime',
-			key: 'createDateTime',
-			render: (value) => moment(value).format('DD.MM.YYYY'),
-			width: 150,
-		},
-		{
-			title: 'Сумма',
-			dataIndex: 'amount',
-			key: 'amount',
-			render: (value) => value / 100,
-		},
-		{
-			title: 'Статус',
-			dataIndex: 'status',
-			key: 'status',
-			render: (value) => getPaymentStatus(value),
-		},
-		{
-			title: 'Карта',
-			dataIndex: 'cardInfo',
-			key: 'cardInfo',
-			render: (value) => JSON.parse(value).pan,
-		},
-	];
-
 	return (
 		<div className='subscription-page'>
 			<Typography.Title level={1}>Подписка</Typography.Title>
@@ -148,16 +103,9 @@ const Subscription = ({
 						)}
 					</Card>
 					<Typography.Title level={3}>Информация о платежах</Typography.Title>
-					<Table
-						columns={columns}
-						dataSource={payments}
-						rowKey={(record) => record.orderNumber}
-						loading={isPaymentsDataLoading}
-						scroll={{
-							x: isMobile ? 1000 : null,
-							y: isMobile ? 300 : null,
-						}}
-					/>
+					<Payments />
+					<Typography.Title level={3}>Карты</Typography.Title>
+					<Cards />
 					<Typography.Title level={3}>Настройки</Typography.Title>
 					{status === 'ACTIVE' ? (
 						<Popconfirm

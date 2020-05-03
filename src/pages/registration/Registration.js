@@ -70,7 +70,6 @@ const Registration = () => {
 
 	return (
 		<div className='registration-page'>
-			{console.log(category, discountCode)}
 			<div className='registration-form'>
 				<h1>Регистрация</h1>
 				<Form

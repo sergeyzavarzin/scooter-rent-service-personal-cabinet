@@ -9,16 +9,7 @@ import {
 class Navigation extends React.Component {
 	render() {
 		return (
-			<Layout.Sider
-				breakpoint='lg'
-				collapsedWidth='0'
-				onBreakpoint={broken => {
-					console.log(broken);
-				}}
-				onCollapse={(collapsed, type) => {
-					console.log(collapsed, type);
-				}}
-			>
+			<Layout.Sider breakpoint='lg' collapsedWidth='0'>
 				<Menu theme='dark' mode='inline' defaultSelectedKeys={['4']}>
 					<Menu.Item key='1'>
 						<UserOutlined />
