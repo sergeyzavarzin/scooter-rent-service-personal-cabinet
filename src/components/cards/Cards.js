@@ -21,6 +21,8 @@ const Cards = ({
 		cardStore: { cards, isLoading: isCardsDataLoading, setActiveCard },
 	},
 }) => {
+	const [activeLoading, setActiveLoading] = useState(null);
+	const [isDeleting, setIsDeleting] = useState(null);
 	const columns = [
 		{
 			title: 'Активность',
@@ -39,53 +41,58 @@ const Cards = ({
 			title: 'Срок действия',
 			dataIndex: 'expiryDate',
 			key: 'expiryDate',
-			render: (value) => value,
+			render: (value) => `${value.slice(4, value.length)}/${value.slice(0, 4)}`,
 		},
 		{
 			title: 'Действия',
 			render: (value, record) => (
 				<div className='cards__actions'>
 					<Button
+						type='primary'
 						disabled={record.isActive}
 						onClick={() => handleActivateCard(record.maskedPan)}
+						loading={activeLoading === record.maskedPan}
 					>
 						Активировать
 					</Button>
-					{cards.length > 1 && (
-						<Popconfirm
-							okText='Да'
-							cancelText='Нет'
-							title='Вы уверены?'
-							placement={isMobile ? 'top' : 'rightBottom'}
-							onConfirm={() => handleRemoveCard(record.maskedPan)}
-						>
-							<Button icon={<DeleteOutlined />} type='danger'>
+					{cards.length > 1 &&
+						(record.isActive ? (
+							<Button
+								disabled={record.isActive}
+								icon={<DeleteOutlined />}
+								type='danger'
+							>
 								Удалить
 							</Button>
-						</Popconfirm>
-					)}
+						) : (
+							<Popconfirm
+								okText='Да'
+								cancelText='Нет'
+								title='Вы уверены?'
+								placement={isMobile ? 'top' : 'rightBottom'}
+								onConfirm={() => handleRemoveCard(record.maskedPan)}
+							>
+								<Button
+									disabled={record.isActive}
+									icon={<DeleteOutlined />}
+									type='danger'
+									loading={isDeleting === record.maskedPan}
+								>
+									Удалить
+								</Button>
+							</Popconfirm>
+						))}
 				</div>
 			),
 		},
 	];
 
 	const handleRemoveCard = (maskedPan) => {
+		setIsDeleting(maskedPan);
 		removeCard(maskedPan)
-			.then((result) => result)
-			.catch(() => {
-				notification.open({
-					message: 'Ошибка.',
-					description:
-						'Не удалсь выполнить операцию. Попробуйте повторить ваш запрос позднее.',
-				});
-			});
-	};
-
-	const handleActivateCard = (maskedPan) => {
-		activateCard(maskedPan)
 			.then((result) => {
 				if (typeof result === 'boolean' && result) {
-					setActiveCard(maskedPan);
+					window.location.href = '/';
 				}
 			})
 			.catch(() => {
@@ -94,14 +101,43 @@ const Cards = ({
 					description:
 						'Не удалсь выполнить операцию. Попробуйте повторить ваш запрос позднее.',
 				});
-			});
+			})
+			.finally(() => setIsDeleting(null));
+	};
+
+	const handleActivateCard = (maskedPan) => {
+		setActiveLoading(maskedPan);
+		activateCard(maskedPan)
+			.then((result) => {
+				if (typeof result === 'boolean' && result) {
+					setActiveCard(maskedPan);
+					window.location.href = '/';
+				}
+			})
+			.catch(() => {
+				notification.open({
+					message: 'Ошибка.',
+					description:
+						'Не удалсь выполнить операцию. Попробуйте повторить ваш запрос позднее.',
+				});
+			})
+			.finally(() => setActiveLoading(null));
 	};
 
 	const showConfirm = async () => {
 		confirm({
 			title: 'Привязать новую карту',
 			icon: <InfoCircleOutlined />,
-			content: 'Для проверки с карты будет списана незначительная сумма.',
+			content: (
+				<>
+					<p>
+						Для проверки с карты будет списана незначительная сумма. <br />{' '}
+						<br />
+						После привязки карты ее будет необходимо активировать в Личном
+						Кабинете.
+					</p>
+				</>
+			),
 			cancelText: 'Отмена',
 			okText: 'Подтвердить',
 			onOk() {
