@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, notification, Popconfirm, Table } from 'antd';
 import { inject, observer } from 'mobx-react';
 import {
@@ -9,9 +9,9 @@ import {
 
 import { bindCard } from '../../globals/services/bindCard';
 import { removeCard } from '../../globals/services/removeCard';
+import { activateCard } from '../../globals/services/activateCard';
 
 import './Cards.scss';
-import { activateCard } from '../../globals/services/activateCard';
 
 const { confirm } = Modal;
 
