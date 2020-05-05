@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, notification } from 'antd';
+import { Form, Input, Button, Checkbox, notification, Select } from 'antd';
 
 import { dealCategory } from '../../globals/constants/dealCategory';
 import { passwordPattern } from '../../constants/passwordPattern';
 
 import { registration } from './Registration.service';
+import { getColors } from '../../globals/services/getColors';
 
 import './Registration.scss';
+
+const { Option } = Select;
 
 const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [category, setCategory] = useState(dealCategory.b2c);
 	const [discountCode, setDiscountCode] = useState('');
+	const [colors, setColors] = useState([]);
+	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -23,6 +28,11 @@ const Registration = () => {
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
 		}
+		setIsColorsLoading(true);
+		getColors()
+			.then((result) => setColors(result))
+			.catch((e) => e)
+			.finally(() => setIsColorsLoading(false));
 	}, []);
 
 	const onFinish = async (values) => {
@@ -35,6 +45,7 @@ const Registration = () => {
 				lastName: values.lastName,
 				patronymic: values.patronymic,
 				password: values.password,
+				color: values.color,
 				discountCode,
 				...(category.length ? { dealCategory: category } : {}),
 			});
@@ -107,6 +118,25 @@ const Registration = () => {
 						rules={[{ required: true, message: 'Укажите Ваш телефон' }]}
 					>
 						<Input placeholder='Телефон' />
+					</Form.Item>
+					<Form.Item
+						name='color'
+						hasFeedback
+						validateStatus={isColorsLoading ? 'validating' : null}
+						rules={[{ required: true }]}
+					>
+						<Select
+							placeholder='Выберите цвет самоката'
+							style={{ textAlign: 'left' }}
+						>
+							{colors &&
+								colors.map(
+									(item) =>
+										item.value && (
+											<Option value={item.label}>{item.label}</Option>
+										)
+								)}
+						</Select>
 					</Form.Item>
 					<Form.Item
 						name='password'
