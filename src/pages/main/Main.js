@@ -25,7 +25,7 @@ const Main = ({
 						Cтатус подписки: <b>{getStatus}</b>
 					</div>
 					<div className='main-page__subscription-date'>
-						Ваша подпписка активна до:{' '}
+						Ваша подписка активна до:{' '}
 						<b>{moment(nextPaymentDate).format('DD.MM.YYYY')}</b>
 					</div>
 				</div>

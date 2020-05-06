@@ -76,7 +76,7 @@ const Subscription = ({
 							Cтатус подписки: <br /> <b>{getStatus}</b>
 						</Card.Grid>
 						<Card.Grid style={topGridStyle}>
-							Ваша подпписка активна до: <br />
+							Ваша подписка активна до: <br />
 							<b>{moment(nextPaymentDate).format('DD.MM.YYYY')}</b>
 						</Card.Grid>
 						<Card.Grid style={topGridStyle}>

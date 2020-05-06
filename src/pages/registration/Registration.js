@@ -103,7 +103,7 @@ const Registration = () => {
 					</Form.Item>
 					<Form.Item
 						name='patronymic'
-						rules={[{ required: true, message: 'Укажите Вашу фамилию' }]}
+						rules={[{ required: true, message: 'Укажите Ваше отчество' }]}
 					>
 						<Input placeholder='Отчество' />
 					</Form.Item>
