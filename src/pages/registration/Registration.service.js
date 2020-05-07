@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-export const registration = async (data) =>
-	axios
-		.post('/auth/signUp', data)
-		.then((response) => response)
-		.catch((error) => error);
+export const registration = async (data) => {
+	try {
+		const response = await axios.post('/auth/signUp', data);
+		return response.data;
+	} catch (error) {
+		return error;
+	}
+};

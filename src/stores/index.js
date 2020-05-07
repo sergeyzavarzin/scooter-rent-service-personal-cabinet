@@ -1,5 +1,6 @@
 import { types } from 'mobx-state-tree';
 import axios from 'axios';
+import { notification } from 'antd';
 
 import UserStore from './UserStore';
 import SubscriptionStore from './SubscriptionStore';
@@ -58,6 +59,14 @@ const AppStore = types
 						localStorage.clear();
 						window.location.href = '/';
 					}
+					notification.open({
+						message: 'Ошибка.',
+						description:
+							typeof error.response.data.message === 'string'
+								? error.response.data.message
+								: 'Попробуйте повторить ваш запрос позднее.',
+					});
+					return Promise.reject(error);
 				}
 			);
 			if (token.length) {

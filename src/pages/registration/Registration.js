@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, notification, Select } from 'antd';
+import MaskedInput from 'antd-mask-input';
 
 import { dealCategory } from '../../globals/constants/dealCategory';
 import { passwordPattern } from '../../constants/passwordPattern';
@@ -49,8 +50,7 @@ const Registration = () => {
 			...(category.length ? { dealCategory: category } : {}),
 		})
 			.then((response) => {
-				console.log('response', response);
-				const { formUrl = null, status } = response;
+				const { formUrl = null } = response;
 				if (formUrl) {
 					notification.open({
 						message: 'Успешно!',
@@ -59,25 +59,7 @@ const Registration = () => {
 					setTimeout(() => {
 						window.location.href = formUrl;
 					}, 4000);
-				} else if (status === 400) {
-					console.log(400, ' ', response);
-				} else {
-					notification.open({
-						message: 'Ошибка.',
-						description: 'Попробуйте повторить ваш запрос позднее.',
-					});
 				}
-			})
-			.catch((error) => {
-				console.log(error);
-				console.log(error.message);
-				notification.open({
-					message: 'Ошибка.',
-					description:
-						typeof error.message === 'string'
-							? error.message
-							: 'Попробуйте повторить ваш запрос позднее.',
-				});
 			})
 			.finally(() => setIsLoading(false));
 	};
@@ -120,9 +102,17 @@ const Registration = () => {
 					</Form.Item>
 					<Form.Item
 						name='phone'
-						rules={[{ required: true, message: 'Укажите Ваш телефон' }]}
+						rules={[
+							{ required: true, message: 'Укажите Ваш телефон' },
+							{ min: 15, message: 'Не верный формат телефона' },
+							{ max: 15, message: 'Не верный формат телефона' },
+						]}
 					>
-						<Input placeholder='Телефон' />
+						<MaskedInput
+							mask='#(111)111-11-11'
+							size={11}
+							placeholder='Телефон'
+						/>
 					</Form.Item>
 					<Form.Item
 						name='color'
