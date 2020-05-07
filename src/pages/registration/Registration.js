@@ -37,44 +37,49 @@ const Registration = () => {
 
 	const onFinish = async (values) => {
 		setIsLoading(true);
-		try {
-			const registrationResponse = await registration({
-				email: values.email,
-				phone: values.phone,
-				firstName: values.firstName,
-				lastName: values.lastName,
-				patronymic: values.patronymic,
-				password: values.password,
-				color: values.color,
-				discountCode,
-				...(category.length ? { dealCategory: category } : {}),
-			});
-			const { formUrl = null } = registrationResponse;
-			if (formUrl) {
-				notification.open({
-					message: 'Успешно!',
-					description: 'Сейчас вы будете перенаправлены на форму оплаты.',
-				});
-				setTimeout(() => {
-					window.location.href = formUrl;
-				}, 4000);
-			} else {
+		registration({
+			email: values.email,
+			phone: values.phone,
+			firstName: values.firstName,
+			lastName: values.lastName,
+			patronymic: values.patronymic,
+			password: values.password,
+			color: values.color,
+			discountCode,
+			...(category.length ? { dealCategory: category } : {}),
+		})
+			.then((response) => {
+				console.log('response', response);
+				const { formUrl = null, status } = response;
+				if (formUrl) {
+					notification.open({
+						message: 'Успешно!',
+						description: 'Сейчас вы будете перенаправлены на форму оплаты.',
+					});
+					setTimeout(() => {
+						window.location.href = formUrl;
+					}, 4000);
+				} else if (status === 400) {
+					console.log(400, ' ', response);
+				} else {
+					notification.open({
+						message: 'Ошибка.',
+						description: 'Попробуйте повторить ваш запрос позднее.',
+					});
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+				console.log(error.message);
 				notification.open({
 					message: 'Ошибка.',
-					description: 'Попробуйте повторить ваш запрос позднее.',
+					description:
+						typeof error.message === 'string'
+							? error.message
+							: 'Попробуйте повторить ваш запрос позднее.',
 				});
-			}
-		} catch (e) {
-			notification.open({
-				message: 'Ошибка.',
-				description:
-					typeof e.response.data.message === 'string'
-						? e.response.data.message
-						: 'Попробуйте повторить ваш запрос позднее.',
-			});
-		} finally {
-			setIsLoading(false);
-		}
+			})
+			.finally(() => setIsLoading(false));
 	};
 
 	const onFinishFailed = (errorInfo) => console.log('Failed:', errorInfo);
@@ -133,7 +138,9 @@ const Registration = () => {
 								colors.map(
 									(item) =>
 										item.value && (
-											<Option value={item.label}>{item.label}</Option>
+											<Option key={item.label} value={item.label}>
+												{item.label}
+											</Option>
 										)
 								)}
 						</Select>
