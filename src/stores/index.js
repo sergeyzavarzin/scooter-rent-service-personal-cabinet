@@ -6,17 +6,22 @@ import UserStore from './UserStore';
 import SubscriptionStore from './SubscriptionStore';
 import PaymentStore from './PaymentStore';
 import CardStore from './CardStore';
+import { parseJwt } from '../utils/parseJwt';
 
 const token = localStorage.getItem('token') || '';
 const userInfo = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
 	: {};
 
+const tokenData = token ? parseJwt(token) : null;
+
 const {
 	firstName = '',
 	lastName = '',
 	patronymic = '',
 	email = '',
+	status = tokenData ? tokenData.status : '',
+	contactId = tokenData ? tokenData.contactId : '',
 	subscriptionId = '',
 	registrationDate = '',
 } = userInfo;
@@ -30,7 +35,9 @@ const AppStore = types
 			lastName,
 			patronymic,
 			email,
+			status,
 			subscriptionId,
+			contactId,
 			registrationDate,
 		}),
 		subscriptionStore: types.optional(SubscriptionStore, {}),
@@ -73,7 +80,6 @@ const AppStore = types
 				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				await store.subscriptionStore.fetchSubscriptionInfo();
 				await store.paymentStore.fetchPaymentList();
-				// await store.cardStore.fetchCards();
 			}
 		};
 

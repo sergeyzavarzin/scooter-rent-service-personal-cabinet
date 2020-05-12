@@ -7,6 +7,8 @@ const SubscriptionStore = types
 		nextPaymentDate: types.maybeNull(types.string),
 		status: types.maybeNull(types.string),
 		scooter: types.maybeNull(types.string),
+		category: types.maybeNull(types.string),
+		discount: types.maybeNull(types.number),
 	})
 	.views((self) => ({
 		get getStatus() {
@@ -59,6 +61,8 @@ const SubscriptionStore = types
 				store.nextPaymentDate = response.data.nextPaymentDate;
 				store.status = response.data.status;
 				store.scooter = response.data.scooter;
+				store.category = response.data.category;
+				store.discount = response.data.discount;
 			} catch (err) {
 				console.log(err);
 			}

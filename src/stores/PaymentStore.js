@@ -12,7 +12,7 @@ const Payment = types.model('Payment', {
 
 const PaymentStore = types
 	.model('PaymentStore', {
-		isLoading: types.optional(types.boolean, true),
+		isLoading: types.optional(types.boolean, false),
 		items: types.maybe(types.array(Payment)),
 	})
 	.actions((self) => {

@@ -300,7 +300,7 @@ const Registration = () => {
 							<Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
 								Даю согласие на{' '}
 								<a
-									href={getOfferLink(category, discountCode)}
+									href='https://www.moysamokat.ru/privacy-policy'
 									target='_blank'
 									rel='noopener noreferrer'
 								>
@@ -308,7 +308,7 @@ const Registration = () => {
 								</a>{' '}
 								и соглашаюсь с{' '}
 								<a
-									href='https://www.moysamokat.ru/privacy-policy'
+									href={getOfferLink(category, discountCode)}
 									target='_blank'
 									rel='noopener noreferrer'
 								>

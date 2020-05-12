@@ -7,7 +7,9 @@ const UserStore = types
 		lastName: types.optional(types.string, ''),
 		patronymic: types.optional(types.string, ''),
 		email: types.optional(types.string, ''),
+		status: types.optional(types.string, ''),
 		subscriptionId: types.optional(types.string, ''),
+		contactId: types.optional(types.string, ''),
 		registrationDate: types.optional(types.string, ''),
 	})
 	.views((self) => ({
