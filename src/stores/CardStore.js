@@ -21,14 +21,16 @@ const CardStore = types
 		const store = self;
 
 		const fetchCards = flow(function* fetch() {
-			store.isLoading = true;
-			try {
-				const response = yield axios.get('/payment/cards');
-				store.items = response.data;
-			} catch (err) {
-				store.items = [];
-			} finally {
-				store.isLoading = false;
+			if (!store.items || !store.items.length) {
+				store.isLoading = true;
+				try {
+					const response = yield axios.get('/payment/cards');
+					store.items = response.data;
+				} catch (err) {
+					store.items = [];
+				} finally {
+					store.isLoading = false;
+				}
 			}
 		});
 

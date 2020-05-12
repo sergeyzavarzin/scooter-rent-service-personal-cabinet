@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, notification, Popconfirm, Table } from 'antd';
 import { inject, observer } from 'mobx-react';
 import {
@@ -16,9 +16,16 @@ import './Cards.scss';
 const { confirm } = Modal;
 
 const Cards = ({
+	isVisible,
+	setIsVisible,
 	store: {
 		isMobile,
-		cardStore: { cards, isLoading: isCardsDataLoading, setActiveCard },
+		cardStore: {
+			cards,
+			isLoading: isCardsDataLoading,
+			setActiveCard,
+			fetchCards,
+		},
 	},
 }) => {
 	const [activeLoading, setActiveLoading] = useState(null);
@@ -86,6 +93,12 @@ const Cards = ({
 			),
 		},
 	];
+
+	useEffect(() => {
+		if (isVisible) {
+			fetchCards();
+		}
+	});
 
 	const handleRemoveCard = (maskedPan) => {
 		setIsDeleting(maskedPan);
@@ -157,7 +170,15 @@ const Cards = ({
 	};
 
 	return (
-		<div className='cards'>
+		<Modal
+			centered
+			visible={isVisible}
+			onOk={() => setIsVisible(false)}
+			onCancel={() => setIsVisible(false)}
+			title='Карты'
+			cancelText='Закрыть'
+			style={{ minWidth: isMobile ? 'auto' : 991 }}
+		>
 			<Table
 				columns={columns}
 				dataSource={cards}
@@ -171,7 +192,7 @@ const Cards = ({
 			<Button type='primary' size='large' onClick={showConfirm}>
 				Привязать новую карту
 			</Button>
-		</div>
+		</Modal>
 	);
 };
 

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button, notification, Typography, Card, Popconfirm } from 'antd';
 import moment from 'moment';
+import { CreditCardOutlined } from '@ant-design/icons';
+
+import Payments from '../../components/payments/Payments';
+import Cards from '../../components/cards/Cards';
 
 import { setSubscriptionStatus } from '../../globals/services/setSubscriptionStatus';
 
 import './Subscription.scss';
-import Payments from '../../components/payments/Payments';
-import Cards from '../../components/cards/Cards';
 
 const Subscription = ({
 	store: {
@@ -23,6 +25,7 @@ const Subscription = ({
 		},
 	},
 }) => {
+	const [modalVisible, setModalVisible] = useState(false);
 	const [isSubscriptionStatusLoading, setSubscriptionStatusLoading] = useState(
 		false
 	);
@@ -102,10 +105,18 @@ const Subscription = ({
 							</Card.Grid>
 						)}
 					</Card>
-					<Typography.Title level={3}>Информация о платежах</Typography.Title>
+					<div className='subscription__title'>
+						<Typography.Title level={3}>Информация о платежах</Typography.Title>
+						<Button
+							icon={<CreditCardOutlined />}
+							type='primary'
+							onClick={() => setModalVisible(true)}
+						>
+							Карты
+						</Button>
+					</div>
 					<Payments />
-					<Typography.Title level={3}>Карты</Typography.Title>
-					<Cards />
+					<Cards isVisible={modalVisible} setIsVisible={setModalVisible} />
 					<Typography.Title level={3}>Настройки</Typography.Title>
 					{status === 'ACTIVE' ? (
 						<Popconfirm

@@ -10,13 +10,20 @@
   padding: 20px;
   border-radius: 8px;
   width: 320px;
-  text-align: center;
 
   &__form {
+    display: none;
 
+    &--active {
+      display: block;
+    }
   }
 
   &__button {
     width: 100%;
+  }
+
+  h1 {
+    text-align: center;
   }
 }

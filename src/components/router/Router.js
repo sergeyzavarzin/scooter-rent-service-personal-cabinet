@@ -20,6 +20,8 @@ const Router = ({
 		<Switch>
 			<Route path={['/', '/subscription']} exact component={Subscription} />
 			<Route path='/help' exact component={Help} />
+			<Route path='/successPayment' exact component={SuccessPayment} />
+			<Route path='/failPayment' exact component={FailPayment} />
 			<Redirect to='/' />
 		</Switch>
 	) : (

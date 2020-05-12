@@ -73,7 +73,7 @@ const AppStore = types
 				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				await store.subscriptionStore.fetchSubscriptionInfo();
 				await store.paymentStore.fetchPaymentList();
-				await store.cardStore.fetchCards();
+				// await store.cardStore.fetchCards();
 			}
 		};
 

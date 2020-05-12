@@ -1,3 +1,17 @@
+@import '../../globals/styles/variables';
+
 .subscription-page {
   font-size: 18px;
+}
+
+.subscription {
+  &__title {
+    display: flex;
+    flex-direction: column;
+
+    @media #{$desktopSmall} {
+      justify-content: space-between;
+      flex-direction: row;
+    }
+  }
 }
