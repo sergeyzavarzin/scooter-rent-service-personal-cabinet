@@ -13,12 +13,11 @@ import classNames from 'classnames';
 
 import { dealCategory } from '../../globals/constants/dealCategory';
 import { passwordPattern } from '../../constants/passwordPattern';
-
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
+import { getOfferLink } from '../../utils/getOfferLink';
 
 import './Registration.scss';
-import { getOfferLink } from '../../utils/getOfferLink';
 
 const { Option } = Select;
 
@@ -285,7 +284,7 @@ const Registration = () => {
 						>
 							<Radio.Group>
 								<Radio value={1}>Картой на сайте</Radio>
-								<Radio value={2}>Оплата при получении</Radio>
+								{/*<Radio value={2}>Оплата при получении</Radio>*/}
 							</Radio.Group>
 						</Form.Item>
 						<Form.Item
