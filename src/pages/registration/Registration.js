@@ -18,6 +18,7 @@ import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
 
 import './Registration.scss';
+import { getOfferLink } from '../../utils/getOfferLink';
 
 const { Option } = Select;
 
@@ -300,7 +301,7 @@ const Registration = () => {
 							<Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
 								Даю согласие на{' '}
 								<a
-									href='https://www.moysamokat.ru/oferta'
+									href={getOfferLink(category, discountCode)}
 									target='_blank'
 									rel='noopener noreferrer'
 								>
