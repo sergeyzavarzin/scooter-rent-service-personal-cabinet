@@ -249,7 +249,7 @@ const Registration = () => {
 								placeholder='Способ доставки'
 								style={{ textAlign: 'left' }}
 							>
-								<Option value='Курьером'>Доставка курьером (Бесплатно)</Option>
+								<Option value='Курьером'>Доставка курьером</Option>
 								<Option value='Самовывоз'>Самовывоз</Option>
 							</Select>
 						</Form.Item>
