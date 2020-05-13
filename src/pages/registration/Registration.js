@@ -215,7 +215,7 @@ const Registration = () => {
 							name='color'
 							hasFeedback
 							validateStatus={isColorsLoading ? 'validating' : null}
-							rules={[{ required: true }]}
+							rules={[{ required: true, message: 'Выберите цвет' }]}
 						>
 							<Select
 								placeholder='Выберите цвет самоката'
