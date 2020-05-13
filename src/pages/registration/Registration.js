@@ -25,7 +25,10 @@ const Registration = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [category, setCategory] = useState(dealCategory.b2c);
 	const [discountCode, setDiscountCode] = useState('');
-	const [colors, setColors] = useState([]);
+	const [colors, setColors] = useState([
+		{ label: 'Черный', value: true },
+		{ label: 'Белый', value: true },
+	]);
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 	const [step, setStep] = useState(1);
 	const [formValues, setValues] = useState({});
@@ -41,10 +44,6 @@ const Registration = () => {
 			setDiscountCode(discountCodeValue);
 		}
 		setIsColorsLoading(true);
-		getColors()
-			.then((result) => setColors(result))
-			.catch((e) => e)
-			.finally(() => setIsColorsLoading(false));
 	}, []);
 
 	const onFinish = async (values, payNow = false) => {
@@ -93,6 +92,18 @@ const Registration = () => {
 		if (name === 'step-1') {
 			setValues({ ...formValues, ...values });
 			setStep(2);
+			getColors()
+				.then((result) => {
+					const isOneAvailable = result.reduce(
+						(acc, curr) => acc || curr.value,
+						false
+					);
+					if (isOneAvailable) {
+						setColors(result);
+					}
+				})
+				.catch((e) => e)
+				.finally(() => setIsColorsLoading(false));
 		} else if (name === 'step-2') {
 			setValues({ ...formValues, ...values });
 			setStep(3);
@@ -103,6 +114,7 @@ const Registration = () => {
 
 	return (
 		<div className='registration-page'>
+			{console.log(colors)}
 			<div className='registration-form'>
 				<h1>Регистрация</h1>
 				<h1>Шаг {step} из 3</h1>
@@ -209,15 +221,14 @@ const Registration = () => {
 								placeholder='Выберите цвет самоката'
 								style={{ textAlign: 'left' }}
 							>
-								{colors &&
-									colors.map(
-										(item) =>
-											item.value && (
-												<Option key={item.label} value={item.label}>
-													{item.label}
-												</Option>
-											)
-									)}
+								{colors.map(
+									(item) =>
+										item.value && (
+											<Option key={item.label} value={item.label}>
+												{item.label}
+											</Option>
+										)
+								)}
 							</Select>
 						</Form.Item>
 						<Form.Item
