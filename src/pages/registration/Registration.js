@@ -114,7 +114,6 @@ const Registration = () => {
 
 	return (
 		<div className='registration-page'>
-			{console.log(colors)}
 			<div className='registration-form'>
 				<h1>Регистрация</h1>
 				<h1>Шаг {step} из 3</h1>
