@@ -67,38 +67,30 @@ const Subscription = ({
 			.finally(() => setSubscriptionStatusLoading(false));
 	};
 
-	const doInitialPayment = () => {
-		handleInitialPayment().then((response) => {
-			const { formUrl = null } = response;
-			if (formUrl) {
-				notification.open({
-					message: 'Успешно!',
-					description: 'Сейчас вы будете перенаправлены на форму оплаты.',
-				});
-				setTimeout(() => {
-					window.location.href = formUrl;
-				}, 4000);
-			}
-		});
-	};
-
 	const handleInitialPayment = async () => {
 		setIsInitialPaymentLoading(true);
-		try {
-			const data = {
+		axios
+			.post('/payment/initial-payment', {
 				dealId: subscriptionId,
 				clientId: contactId,
 				category,
 				discount,
 				email,
-			};
-			const response = await axios.post('/payment/initial-payment', data);
-			return response.data;
-		} catch (err) {
-			throw new Error(err);
-		} finally {
-			setIsInitialPaymentLoading(false);
-		}
+			})
+			.then((response) => {
+				if (response.data.formUrl) {
+					localStorage.clear();
+					notification.open({
+						message: 'Успешно!',
+						description: 'Сейчас вы будете перенаправлены на форму оплаты.',
+					});
+					setTimeout(() => {
+						window.location.href = response.data.formUrl;
+					}, 4000);
+				}
+			})
+			.catch((err) => err)
+			.finally(() => setIsInitialPaymentLoading(false));
 	};
 
 	return (
@@ -195,7 +187,7 @@ const Subscription = ({
 						<Button
 							size='large'
 							type='primary'
-							onClick={doInitialPayment}
+							onClick={handleInitialPayment}
 							loading={isInitialPaymentLoading}
 						>
 							Оплатить подписку
