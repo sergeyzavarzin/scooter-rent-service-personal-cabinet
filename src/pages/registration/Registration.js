@@ -29,9 +29,9 @@ const Registration = () => {
 		{ label: 'Черный', value: true },
 		{ label: 'Белый', value: true },
 	]);
-	const [isColorsLoading, setIsColorsLoading] = useState(false);
 	const [step, setStep] = useState(1);
 	const [formValues, setValues] = useState({});
+	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
