@@ -48,7 +48,6 @@ class Login extends React.Component {
 	};
 
 	render() {
-		const { isLoading } = this.state;
 		return (
 			<div className='login-page'>
 				<div className='form'>
@@ -88,7 +87,7 @@ class Login extends React.Component {
 								htmlType='submit'
 								size='large'
 								className='form__button'
-								loading={isLoading}
+								loading={this.state.isLoading}
 							>
 								Войти
 							</Button>

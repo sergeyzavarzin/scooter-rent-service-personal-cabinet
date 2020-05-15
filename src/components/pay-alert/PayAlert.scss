@@ -1,3 +1,12 @@
 .pay-alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
 
+  &__text {
+    text-align: center;
+  }
 }
