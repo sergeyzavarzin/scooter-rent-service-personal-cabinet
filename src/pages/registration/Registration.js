@@ -8,6 +8,7 @@ import {
 	Select,
 	Radio,
 } from 'antd';
+import { withRouter } from 'react-router-dom';
 import MaskedInput from 'antd-mask-input';
 import classNames from 'classnames';
 
@@ -21,7 +22,7 @@ import './Registration.scss';
 
 const { Option } = Select;
 
-const Registration = () => {
+const Registration = ({ history: { push } }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [category, setCategory] = useState(dealCategory.b2c);
 	const [discountCode, setDiscountCode] = useState('');
@@ -200,6 +201,14 @@ const Registration = () => {
 						>
 							Далее
 						</Button>
+						<Button
+							type='link'
+							onClick={() => push('/login')}
+							block
+							style={{ marginTop: 15 }}
+						>
+							У меня есть аккаунт
+						</Button>
 					</Form>
 					<Form
 						name='step-2'
@@ -272,6 +281,14 @@ const Registration = () => {
 						>
 							Далее
 						</Button>
+						<Button
+							type='link'
+							onClick={() => setStep(1)}
+							block
+							style={{ marginTop: 15 }}
+						>
+							Назад
+						</Button>
 					</Form>
 					<Form
 						name='step-3'
@@ -343,4 +360,4 @@ const Registration = () => {
 	);
 };
 
-export default Registration;
+export default withRouter(Registration);
