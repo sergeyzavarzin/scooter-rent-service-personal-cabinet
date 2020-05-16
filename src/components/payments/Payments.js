@@ -62,16 +62,17 @@ const Payments = ({
 	];
 
 	return (
-		<div className='subscription__title'>
-			<Typography.Title level={3}>Информация о платежах</Typography.Title>
-			<Button
-				icon={<CreditCardOutlined />}
-				type='primary'
-				onClick={() => setModalVisible(true)}
-			>
-				Карты
-			</Button>
-			<Payments />
+		<div>
+			<div className='subscription__title'>
+				<Typography.Title level={3}>Информация о платежах</Typography.Title>
+				<Button
+					icon={<CreditCardOutlined />}
+					type='primary'
+					onClick={() => setModalVisible(true)}
+				>
+					Карты
+				</Button>
+			</div>
 			<Table
 				columns={columns}
 				dataSource={payments}
