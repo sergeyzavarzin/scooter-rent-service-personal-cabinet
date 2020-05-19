@@ -9,7 +9,11 @@ import {
 
 import './Help.scss';
 
-const Help = ({ store }) => {
+const Help = ({
+	store: {
+		subscriptionStore: { category },
+	},
+}) => {
 	const iconStyle = {
 		fontSize: 30,
 	};
@@ -53,14 +57,16 @@ const Help = ({ store }) => {
 					<div className='help-page__cards'>
 						<Typography.Title level={3}>Полезная информация</Typography.Title>
 						<div className='help-page__cards-wrapper'>
-							<Card
-								title={<InfoCircleOutlined style={iconStyle} />}
-								onClick={() =>
-									window.open('https://www.moysamokat.ru/manual', '_blank')
-								}
-							>
-								Инструкция пользователя
-							</Card>
+							{category !== '4' && (
+								<Card
+									title={<InfoCircleOutlined style={iconStyle} />}
+									onClick={() =>
+										window.open('https://www.moysamokat.ru/manual', '_blank')
+									}
+								>
+									Инструкция пользователя
+								</Card>
+							)}
 							<Card
 								title={<WarningOutlined style={iconStyle} />}
 								onClick={() =>
