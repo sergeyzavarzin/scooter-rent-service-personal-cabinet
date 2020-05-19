@@ -17,6 +17,7 @@ import { passwordPattern } from '../../constants/passwordPattern';
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
 import { getOfferLink } from '../../utils/getOfferLink';
+import { filterColorsForCategory } from './_utils';
 
 import './Registration.scss';
 
@@ -30,7 +31,7 @@ const Registration = ({ history: { push } }) => {
 		{ label: 'Черный', value: true },
 		{ label: 'Белый', value: true },
 	]);
-	const [step, setStep] = useState(1);
+	const [step, setStep] = useState(0);
 	const [formValues, setValues] = useState({});
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
@@ -40,11 +41,24 @@ const Registration = ({ history: { push } }) => {
 		const discountCodeValue = urlParams.get('discountCode');
 		if (category && category.length) {
 			setCategory(dealCategory[category]);
+			setStep(1);
 		}
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
 		}
 		setIsColorsLoading(true);
+		getColors()
+			.then((result) => {
+				const isOneAvailable = result.reduce(
+					(acc, curr) => acc || curr.value,
+					false
+				);
+				if (isOneAvailable) {
+					setColors(result);
+				}
+			})
+			.catch((e) => e)
+			.finally(() => setIsColorsLoading(false));
 	}, []);
 
 	const onFinish = async (values, payNow = false) => {
@@ -90,21 +104,11 @@ const Registration = ({ history: { push } }) => {
 	};
 
 	const handleFormFinish = async (name, { values }) => {
-		if (name === 'step-1') {
+		if (name === 'step-0') {
+			setStep(1);
+		} else if (name === 'step-1') {
 			setValues({ ...formValues, ...values });
 			setStep(2);
-			getColors()
-				.then((result) => {
-					const isOneAvailable = result.reduce(
-						(acc, curr) => acc || curr.value,
-						false
-					);
-					if (isOneAvailable) {
-						setColors(result);
-					}
-				})
-				.catch((e) => e)
-				.finally(() => setIsColorsLoading(false));
 		} else if (name === 'step-2') {
 			setValues({ ...formValues, ...values });
 			setStep(3);
@@ -116,9 +120,40 @@ const Registration = ({ history: { push } }) => {
 	return (
 		<div className='registration-page'>
 			<div className='registration-form'>
-				<h1>Регистрация</h1>
-				<h1>Шаг {step} из 3</h1>
+				<h1>
+					Регистрация {category === dealCategory.courier && <>для курьеров</>}
+				</h1>
+				{!!step && <h1>Шаг {step} из 3</h1>}
 				<Form.Provider onFormFinish={handleFormFinish}>
+					<Form
+						name='step-0'
+						className={classNames(
+							'registration-form__form registration-form__form--main',
+							{
+								'registration-form__form--active': step === 0,
+							}
+						)}
+					>
+						<Button
+							type='primary'
+							htmlType='submit'
+							size='large'
+							className='registration-form__button'
+							onClick={() => setCategory(dealCategory.b2c)}
+							style={{ margin: '15px 0' }}
+						>
+							Для личного пользования
+						</Button>
+						<Button
+							type='primary'
+							htmlType='submit'
+							size='large'
+							className='registration-form__button'
+							onClick={() => setCategory(dealCategory.courier)}
+						>
+							Для курьеров
+						</Button>
+					</Form>
 					<Form
 						name='step-1'
 						className={classNames(
@@ -229,7 +264,7 @@ const Registration = ({ history: { push } }) => {
 								placeholder='Выберите цвет самоката'
 								style={{ textAlign: 'left' }}
 							>
-								{colors.map(
+								{colors.filter(filterColorsForCategory(category)).map(
 									(item) =>
 										item.value && (
 											<Option key={item.label} value={item.label}>
@@ -268,7 +303,9 @@ const Registration = ({ history: { push } }) => {
 								placeholder='Способ доставки'
 								style={{ textAlign: 'left' }}
 							>
-								<Option value='Курьером'>Доставка курьером</Option>
+								{category !== dealCategory.courier && (
+									<Option value='Курьером'>Доставка курьером</Option>
+								)}
 								<Option value='Самовывоз'>Самовывоз</Option>
 							</Select>
 						</Form.Item>
