@@ -20,6 +20,7 @@ import { getOfferLink } from '../../utils/getOfferLink';
 import { filterColorsForCategory } from './_utils';
 
 import './Registration.scss';
+import { login } from '../../globals/services/login';
 
 const { Option } = Select;
 
@@ -93,10 +94,40 @@ const Registration = ({ history: { push } }) => {
 					notification.open({
 						message: 'Успешно!',
 						description:
-							'Вы можете оплатить заказ внутри личного кабинета в любой момент.',
+							'Сейчас вас автоматичски перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.',
 					});
 					setTimeout(() => {
-						window.location.href = '/';
+						login(values.email, values.password)
+							.then((result) => {
+								localStorage.setItem('token', result.accessToken);
+								localStorage.setItem(
+									'userInfo',
+									JSON.stringify({
+										email: result.email,
+										phone: result.phone,
+										lastName: result.lastName,
+										firstName: result.firstName,
+										patronymic: result.patronymic,
+										subscriptionId: result.subscriptionId,
+										registrationDate: result.registrationDate,
+									})
+								);
+								window.location.href = '/';
+							})
+							.catch((error) => {
+								this.setState({ isLoading: false });
+								if (
+									error.response.data.message &&
+									typeof error.response.data.message === 'string'
+								) {
+									notification.open({
+										message: 'Ошибка.',
+										description:
+											error.response.data.message ||
+											'Попробуйте повторить ваш запрос позднее.',
+									});
+								}
+							});
 					}, 4000);
 				}
 			})
@@ -196,7 +227,7 @@ const Registration = ({ history: { push } }) => {
 							]}
 						>
 							<MaskedInput
-								mask='#(111)111-11-11'
+								mask='8(111)111-11-11'
 								size={11}
 								placeholder='Телефон'
 							/>
