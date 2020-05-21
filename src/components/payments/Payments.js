@@ -62,7 +62,7 @@ const Payments = ({
 	];
 
 	return (
-		<div>
+		<div className='payments'>
 			<div className='subscription__title'>
 				<Typography.Title level={3}>Информация о платежах</Typography.Title>
 				<Button

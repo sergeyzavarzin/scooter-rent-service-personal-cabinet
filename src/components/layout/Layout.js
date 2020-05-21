@@ -7,6 +7,8 @@ import Footer from '../footer';
 import Header from '../header';
 import Navigation from '../navigation';
 
+import './Layout.scss';
+
 const disableNav = true;
 
 const AppLayout = ({
@@ -23,11 +25,11 @@ const AppLayout = ({
 	}, [setIsMobile]);
 	return (
 		<div className='app'>
-			<Layout style={{ minHeight: '100vh' }}>
+			<Layout className='layout'>
 				{!disableNav && isUserLogged && <Navigation />}
 				<Layout>
 					<Header />
-					<Layout.Content style={{ margin: '24px 16px 0' }}>
+					<Layout.Content className='layout__content'>
 						<div className='site-layout-background'>
 							<Router />
 						</div>

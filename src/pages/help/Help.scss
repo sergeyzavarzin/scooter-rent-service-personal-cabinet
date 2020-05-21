@@ -1,9 +1,13 @@
 @import '../../globals/styles/variables';
 
 .help-page {
+  &__contacts {
+    margin-bottom: 30px;
+  }
+
   &__cards-wrapper {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-direction: column;
     align-items: center;
 
