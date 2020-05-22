@@ -186,10 +186,7 @@ const Registration = (props) => {
 					</>
 				) : (
 					<>
-						<h1>
-							Регистрация{' '}
-							{category === dealCategory.courier && <>для курьеров</>}
-						</h1>
+						<h1>Регистрация {category === 'courier' && <>для курьеров</>}</h1>
 						{!!step && <h1>Шаг {step} из 3</h1>}
 						<Form.Provider onFormFinish={handleFormFinish}>
 							<Form
@@ -346,7 +343,7 @@ const Registration = (props) => {
 										placeholder='Способ доставки'
 										style={{ textAlign: 'left' }}
 									>
-										{category !== dealCategory.courier && (
+										{category !== 'courier' && (
 											<Option value='Курьером'>Доставка курьером</Option>
 										)}
 										<Option value='Самовывоз'>Самовывоз</Option>

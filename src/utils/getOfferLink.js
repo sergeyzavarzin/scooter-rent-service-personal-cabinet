@@ -1,8 +1,8 @@
 export const getOfferLink = (category, discountCode) => {
-	if (category === '4' && discountCode === 'OLD_FRIEND') {
+	if (category === 'courier' && discountCode === 'OLD_FRIEND') {
 		return 'https://moysamokat.ru/oferta_delivery_2500';
 	}
-	if (category === '4') {
+	if (category === 'courier') {
 		return 'https://moysamokat.ru/oferta_delivery2800';
 	}
 	if (discountCode === 'NEW_USER') {
