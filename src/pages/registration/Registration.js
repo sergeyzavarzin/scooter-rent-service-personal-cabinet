@@ -18,9 +18,10 @@ import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
 import { getOfferLink } from '../../utils/getOfferLink';
 import { filterColorsForCategory } from './_utils';
+import { login } from '../../globals/services/login';
+import getCookie from '../../utils/getCookie';
 
 import './Registration.scss';
-import { login } from '../../globals/services/login';
 
 const { Option } = Select;
 
@@ -37,6 +38,17 @@ const Registration = ({ history: { push } }) => {
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
 	useEffect(() => {
+		// TODO: remove
+		console.log(
+			{
+				utm: {
+					source: getCookie('utm_source'),
+					medium: getCookie('utm_medium'),
+					campaign: getCookie('utm_campaign'),
+				},
+			},
+			document.cookie
+		);
 		const urlParams = new URLSearchParams(window.location.search);
 		const category = urlParams.get('offer');
 		const discountCodeValue = urlParams.get('discountCode');
@@ -75,6 +87,12 @@ const Registration = ({ history: { push } }) => {
 				color: values.color,
 				connectType: values.connectType,
 				deliveryType: values.deliveryType,
+				// TODO: add
+				// utm: {
+				// 	source: getCookie('utm_source'),
+				// 	medium: getCookie('utm_medium'),
+				// 	campaign: getCookie('utm_campaign'),
+				// },
 				discountCode,
 				...(category.length ? { dealCategory: category } : {}),
 			},
