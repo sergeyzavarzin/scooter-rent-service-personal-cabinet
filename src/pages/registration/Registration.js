@@ -80,6 +80,8 @@ const Registration = ({ history: { push } }) => {
 					source: getCookie('utm_source') || 'Отсутствует',
 					medium: getCookie('utm_medium') || 'Отсутствует',
 					campaign: getCookie('utm_campaign') || 'Отсутствует',
+					content: getCookie('utm_content') || 'Отсутствует',
+					term: getCookie('utm_term') || 'Отсутствует',
 				},
 				discountCode,
 				...(category.length ? { dealCategory: category } : {}),
