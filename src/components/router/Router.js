@@ -29,7 +29,7 @@ const Router = ({
 			<Route path={['/', '/login']} exact component={Login} />
 			<Route path='/forgot' exact component={Forgot} />
 			<Route path='/change-password' exact component={ChangePassword} />
-			<Route path='/registration' exact component={Registration} />
+			<Route path='/registration/:category?' exact component={Registration} />
 			<Route path='/failPayment' exact component={FailPayment} />
 			<Route path='/successPayment' exact component={SuccessPayment} />
 			<Redirect to='/' />

@@ -5,5 +5,11 @@ export const getOfferLink = (category, discountCode) => {
 	if (category === '4') {
 		return 'https://moysamokat.ru/oferta_delivery2800';
 	}
+	if (discountCode === 'NEW_USER') {
+		return 'https://www.moysamokat.ru/oferta2900';
+	}
+	if (discountCode === 'NEW_COURIER') {
+		return 'https://www.moysamokat.ru/oferta_delivery3300';
+	}
 	return 'https://www.moysamokat.ru/oferta';
 };
