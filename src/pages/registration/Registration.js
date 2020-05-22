@@ -38,17 +38,6 @@ const Registration = ({ history: { push } }) => {
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
 	useEffect(() => {
-		// TODO: remove
-		console.log(
-			{
-				utm: {
-					source: getCookie('utm_source'),
-					medium: getCookie('utm_medium'),
-					campaign: getCookie('utm_campaign'),
-				},
-			},
-			document.cookie
-		);
 		const urlParams = new URLSearchParams(window.location.search);
 		const category = urlParams.get('offer');
 		const discountCodeValue = urlParams.get('discountCode');
@@ -87,12 +76,11 @@ const Registration = ({ history: { push } }) => {
 				color: values.color,
 				connectType: values.connectType,
 				deliveryType: values.deliveryType,
-				// TODO: add
-				// utm: {
-				// 	source: getCookie('utm_source'),
-				// 	medium: getCookie('utm_medium'),
-				// 	campaign: getCookie('utm_campaign'),
-				// },
+				utm: {
+					source: getCookie('utm_source') || 'Отсутствует',
+					medium: getCookie('utm_medium') || 'Отсутствует',
+					campaign: getCookie('utm_campaign') || 'Отсутствует',
+				},
 				discountCode,
 				...(category.length ? { dealCategory: category } : {}),
 			},
