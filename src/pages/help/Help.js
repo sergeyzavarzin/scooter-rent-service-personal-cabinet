@@ -8,10 +8,12 @@ import {
 } from '@ant-design/icons';
 
 import './Help.scss';
+import { getOfferLink } from '../../utils/getOfferLink';
+import { getDiscountCodeValue } from '../../utils/getDiscountCodeValue';
 
 const Help = ({
 	store: {
-		subscriptionStore: { category },
+		subscriptionStore: { category, discount },
 	},
 }) => {
 	const iconStyle = {
@@ -81,7 +83,13 @@ const Help = ({
 							<Card
 								title={<UserOutlined style={iconStyle} />}
 								onClick={() =>
-									window.open('https://www.moysamokat.ru/oferta', '_blank')
+									window.open(
+										getOfferLink(
+											category === '4' ? 'courier' : 'user',
+											getDiscountCodeValue(category, discount)
+										),
+										'_blank'
+									)
 								}
 							>
 								Пользовательское соглашение

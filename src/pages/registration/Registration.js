@@ -32,7 +32,6 @@ const Registration = (props) => {
 		},
 	} = props;
 	const [isLoading, setIsLoading] = useState(false);
-	// const [category, setCategory] = useState(dealCategory.b2c);
 	const [discountCode, setDiscountCode] = useState('');
 	const [colors, setColors] = useState([
 		{ label: 'Черный', value: true },
@@ -44,7 +43,6 @@ const Registration = (props) => {
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-		// const category = urlParams.get('offer');
 		const discountCodeValue = urlParams.get('discountCode');
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
@@ -62,7 +60,7 @@ const Registration = (props) => {
 			})
 			.catch((e) => e)
 			.finally(() => setIsColorsLoading(false));
-	}, []);
+	}, [window.location.search]);
 
 	const onFinish = async (values, payNow = false) => {
 		setIsLoading(true);
@@ -177,7 +175,9 @@ const Registration = (props) => {
 								htmlType='submit'
 								size='large'
 								className='registration-form__button'
-								onClick={() => push(`/registration/courier`)}
+								onClick={() =>
+									push(`/registration/courier?discountCode=NEW_COURIER`)
+								}
 							>
 								Для курьеров
 							</Button>
