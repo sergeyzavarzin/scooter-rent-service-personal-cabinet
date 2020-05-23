@@ -60,7 +60,7 @@ const Registration = (props) => {
 			})
 			.catch((e) => e)
 			.finally(() => setIsColorsLoading(false));
-	}, [window.location.search]);
+	}, [window.location.search]); // eslint-disable-line
 
 	const onFinish = async (values, payNow = false) => {
 		setIsLoading(true);
@@ -138,6 +138,7 @@ const Registration = (props) => {
 					}, 4000);
 				}
 			})
+			.catch((e) => e)
 			.finally(() => setIsLoading(false));
 	};
 

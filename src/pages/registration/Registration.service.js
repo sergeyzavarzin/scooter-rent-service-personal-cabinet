@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-export const registration = async (data, payNow) => {
-	const params = { payNow };
-	try {
-		const response = await axios.post('/auth/signUp', data, { params });
-		return response.data;
-	} catch (error) {
-		return error;
-	}
-};
+export const registration = (data, payNow) =>
+	new Promise(async (resolve, reject) => {
+		const params = { payNow };
+		try {
+			const response = await axios.post('/auth/signUp', data, { params });
+			resolve(response.data);
+		} catch (error) {
+			reject(error);
+		}
+	});
