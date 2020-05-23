@@ -12,7 +12,6 @@ import { withRouter } from 'react-router-dom';
 import MaskedInput from 'antd-mask-input';
 import classNames from 'classnames';
 
-import { dealCategory } from '../../globals/constants/dealCategory';
 import { passwordPattern } from '../../constants/passwordPattern';
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
