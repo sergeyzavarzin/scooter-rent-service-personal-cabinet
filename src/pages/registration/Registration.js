@@ -166,7 +166,9 @@ const Registration = (props) => {
 								htmlType='submit'
 								size='large'
 								className='registration-form__button'
-								onClick={() => push(`/registration/client`)}
+								onClick={() =>
+									push(`/registration/client?discountCode=NEW_USER`)
+								}
 								style={{ margin: '15px 0' }}
 							>
 								Для личного пользования
