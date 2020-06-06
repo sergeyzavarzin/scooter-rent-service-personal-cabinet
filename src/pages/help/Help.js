@@ -59,7 +59,7 @@ const Help = ({
 					<div className='help-page__cards'>
 						<Typography.Title level={3}>Полезная информация</Typography.Title>
 						<div className='help-page__cards-wrapper'>
-							{category !== '4' && (
+							{category !== '4' && discount !== 1.43 && (
 								<Card
 									title={<InfoCircleOutlined style={iconStyle} />}
 									onClick={() =>
