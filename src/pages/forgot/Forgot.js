@@ -24,19 +24,6 @@ class Forgot extends React.Component {
 					this.props.history.push('/');
 				}, 3000);
 			})
-			.catch((error) => {
-				if (
-					error.response.data.message &&
-					typeof error.response.data.message === 'string'
-				) {
-					notification.open({
-						message: 'Ошибка.',
-						description:
-							error.response.data.message ||
-							'Попробуйте повторить ваш запрос позднее.',
-					});
-				}
-			})
 			.finally(() => this.setState({ isLoading: false }));
 	};
 

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Form,
-	Input,
-	Button,
-	Checkbox,
-	notification,
-	Select,
-	Radio,
-} from 'antd';
+import { Form, Input, Button, Checkbox, Select, Radio } from 'antd';
 import { withRouter } from 'react-router-dom';
 import MaskedInput from 'antd-mask-input';
 import classNames from 'classnames';
@@ -17,7 +9,6 @@ import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
 import { getOfferLink } from '../../utils/getOfferLink';
 import { filterColorsForCategory } from './_utils';
-import { login } from '../../globals/services/login';
 import getCookie from '../../utils/getCookie';
 
 import './Registration.scss';
@@ -64,8 +55,8 @@ const Registration = (props) => {
 
 	const onFinish = async (values, payNow = false) => {
 		setIsLoading(true);
-		registration(
-			{
+		try {
+			const registrationData = {
 				email: values.email,
 				phone: values.phone,
 				firstName: values.firstName,
@@ -75,6 +66,8 @@ const Registration = (props) => {
 				color: values.color,
 				connectType: values.connectType,
 				deliveryType: values.deliveryType,
+				discountCode,
+				dealCategory: category === 'courier' ? '4' : '2',
 				utm: {
 					source: getCookie('utm_source') || 'Отсутствует',
 					medium: getCookie('utm_medium') || 'Отсутствует',
@@ -82,64 +75,11 @@ const Registration = (props) => {
 					content: getCookie('utm_content') || 'Отсутствует',
 					term: getCookie('utm_term') || 'Отсутствует',
 				},
-				discountCode,
-				dealCategory: category === 'courier' ? '4' : '2',
-			},
-			payNow
-		)
-			.then((response) => {
-				const { formUrl = null } = response;
-				if (payNow && formUrl) {
-					notification.open({
-						message: 'Успешно!',
-						description: 'Сейчас вы будете перенаправлены на форму оплаты.',
-					});
-					setTimeout(() => {
-						window.location.href = formUrl;
-					}, 4000);
-				} else {
-					notification.open({
-						message: 'Успешно!',
-						description:
-							'Сейчас вас автоматичски перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.',
-					});
-					setTimeout(() => {
-						login(values.email, values.password)
-							.then((result) => {
-								localStorage.setItem('token', result.accessToken);
-								localStorage.setItem(
-									'userInfo',
-									JSON.stringify({
-										email: result.email,
-										phone: result.phone,
-										lastName: result.lastName,
-										firstName: result.firstName,
-										patronymic: result.patronymic,
-										subscriptionId: result.subscriptionId,
-										registrationDate: result.registrationDate,
-									})
-								);
-								window.location.href = '/';
-							})
-							.catch((error) => {
-								this.setState({ isLoading: false });
-								if (
-									error.response.data.message &&
-									typeof error.response.data.message === 'string'
-								) {
-									notification.open({
-										message: 'Ошибка.',
-										description:
-											error.response.data.message ||
-											'Попробуйте повторить ваш запрос позднее.',
-									});
-								}
-							});
-					}, 4000);
-				}
-			})
-			.catch((e) => e)
-			.finally(() => setIsLoading(false));
+			};
+			await registration(registrationData, payNow);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const handleFormFinish = async (name, { values }) => {
@@ -431,6 +371,14 @@ const Registration = (props) => {
 									className='registration-form__button'
 								>
 									Завершить регистрацию
+								</Button>
+								<Button
+									type='link'
+									onClick={() => setStep(2)}
+									block
+									style={{ marginTop: 15 }}
+								>
+									Назад
 								</Button>
 							</Form>
 						</Form.Provider>

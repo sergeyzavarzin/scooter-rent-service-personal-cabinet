@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { login } from '../../globals/services/login';
@@ -12,39 +12,13 @@ class Login extends React.Component {
 		isLoading: false,
 	};
 
-	onFinish = (values) => {
+	onFinish = async (values) => {
 		this.setState({ isLoading: true });
-		login(values.email, values.password)
-			.then((result) => {
-				localStorage.setItem('token', result.accessToken);
-				localStorage.setItem(
-					'userInfo',
-					JSON.stringify({
-						email: result.email,
-						phone: result.phone,
-						lastName: result.lastName,
-						firstName: result.firstName,
-						patronymic: result.patronymic,
-						subscriptionId: result.subscriptionId,
-						registrationDate: result.registrationDate,
-					})
-				);
-				window.location.href = '/';
-			})
-			.catch((error) => {
-				this.setState({ isLoading: false });
-				if (
-					error.response.data.message &&
-					typeof error.response.data.message === 'string'
-				) {
-					notification.open({
-						message: 'Ошибка.',
-						description:
-							error.response.data.message ||
-							'Попробуйте повторить ваш запрос позднее.',
-					});
-				}
-			});
+		try {
+			await login(values.email, values.password);
+		} finally {
+			this.setState({ isLoading: false });
+		}
 	};
 
 	render() {
