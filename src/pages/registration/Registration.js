@@ -57,7 +57,7 @@ const Registration = (props) => {
 		setIsLoading(true);
 		try {
 			const registrationData = {
-				email: values.email,
+				email: values.email.trim(), // trim all spaces to prevent ema il validation error at server
 				phone: values.phone,
 				firstName: values.firstName,
 				lastName: values.lastName,
