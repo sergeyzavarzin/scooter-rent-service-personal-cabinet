@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Layout, Avatar, Button, Menu, Popover, Typography } from 'antd';
+import { Layout, Avatar, Button, Menu, Popover } from 'antd';
 import {
 	BellOutlined,
 	InfoCircleOutlined,
