@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Layout, Avatar, Button, Menu, Popover } from 'antd';
+import { Layout, Avatar, Button, Menu, Popover, Typography } from 'antd';
 import {
 	BellOutlined,
 	InfoCircleOutlined,
@@ -81,7 +81,7 @@ const Header = ({
 							</Menu.Item>
 							<Menu.Item key='/help' onClick={handleMenuClick}>
 								<InfoCircleOutlined />
-								Помощь
+								Помощь и инструкции
 							</Menu.Item>
 						</Menu>
 					)}
