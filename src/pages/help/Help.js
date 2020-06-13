@@ -21,7 +21,7 @@ const Help = ({
 	};
 	return (
 		<div className='help-page'>
-			<Typography.Title level={1}>Помощь</Typography.Title>
+			<Typography.Title level={1}>Помощь и инструкции</Typography.Title>
 			<div className='page-wrapper'>
 				<div className='help-page__wrapper'>
 					<div className='help-page__contacts'>
