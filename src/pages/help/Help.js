@@ -6,16 +6,21 @@ import {
 	UserOutlined,
 	WarningOutlined,
 } from '@ant-design/icons';
+import { getOfferLink } from '../../utils/getOfferLink';
 
 import './Help.scss';
-import { getOfferLink } from '../../utils/getOfferLink';
-import { getDiscountCodeValue } from '../../utils/getDiscountCodeValue';
 
-const Help = ({
-	store: {
-		subscriptionStore: { category, discount },
+const Help = (
+	{
+		store: {
+			subscriptionStore: {
+				category,
+				discount,
+				discountCode
+			},
+		},
 	},
-}) => {
+) => {
 	const iconStyle = {
 		fontSize: 30,
 	};
@@ -61,7 +66,7 @@ const Help = ({
 						<div className='help-page__cards-wrapper'>
 							{category !== '4' && discount !== 1.43 && (
 								<Card
-									title={<InfoCircleOutlined style={iconStyle} />}
+									title={<InfoCircleOutlined style={iconStyle}/>}
 									onClick={() =>
 										window.open('https://www.moysamokat.ru/manual', '_blank')
 									}
@@ -70,25 +75,25 @@ const Help = ({
 								</Card>
 							)}
 							<Card
-								title={<WarningOutlined style={iconStyle} />}
+								title={<WarningOutlined style={iconStyle}/>}
 								onClick={() =>
 									window.open(
 										'https://www.moysamokat.ru/privacy-policy',
-										'_blank'
+										'_blank',
 									)
 								}
 							>
 								Политика конфиденциальности
 							</Card>
 							<Card
-								title={<UserOutlined style={iconStyle} />}
+								title={<UserOutlined style={iconStyle}/>}
 								onClick={() =>
 									window.open(
 										getOfferLink(
 											category === '4' ? 'courier' : 'user',
-											getDiscountCodeValue(category, discount)
+											discountCode,
 										),
-										'_blank'
+										'_blank',
 									)
 								}
 							>

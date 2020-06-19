@@ -107,7 +107,7 @@ const Registration = (props) => {
 								size='large'
 								className='registration-form__button'
 								onClick={() =>
-									push(`/registration/client?discountCode=NEW_USER`)
+									push(`/registration/client?discountCode=USER_NEW_GEN`)
 								}
 								style={{ margin: '15px 0' }}
 							>
@@ -119,7 +119,7 @@ const Registration = (props) => {
 								size='large'
 								className='registration-form__button'
 								onClick={() =>
-									push(`/registration/courier?discountCode=NEW_COURIER`)
+									push(`/registration/courier?discountCode=COURIER_NEW_GEN`)
 								}
 							>
 								Для курьеров
