@@ -10,6 +10,7 @@ import { getColors } from '../../globals/services/getColors';
 import { getOfferLink } from '../../utils/getOfferLink';
 import { filterColorsForCategory } from './_utils';
 import getCookie from '../../utils/getCookie';
+import { redirect } from '../../utils/redirect';
 
 import './Registration.scss';
 
@@ -43,7 +44,7 @@ const Registration = (props) => {
 			.then((result) => {
 				const isOneAvailable = result.reduce(
 					(acc, curr) => acc || curr.value,
-					false
+					false,
 				);
 				if (isOneAvailable) {
 					setColors(result);
@@ -107,7 +108,9 @@ const Registration = (props) => {
 								size='large'
 								className='registration-form__button'
 								onClick={() =>
-									push(`/registration/client?discountCode=USER_NEW_GEN`)
+									process.env.REACT_APP_IS_GOODS_OVER === 'true' ?
+										redirect('https://www.moysamokat.ru/zakaz') :
+										push('/registration/client?discountCode=USER_NEW_GEN')
 								}
 								style={{ margin: '15px 0' }}
 							>
@@ -119,7 +122,9 @@ const Registration = (props) => {
 								size='large'
 								className='registration-form__button'
 								onClick={() =>
-									push(`/registration/courier?discountCode=COURIER_NEW_GEN`)
+									process.env.REACT_APP_IS_GOODS_OVER === 'true' ?
+										redirect('https://www.moysamokat.ru/business') :
+										push('/registration/courier?discountCode=COURIER_NEW_GEN')
 								}
 							>
 								Для курьеров
@@ -137,32 +142,32 @@ const Registration = (props) => {
 									'registration-form__form registration-form__form--main',
 									{
 										'registration-form__form--active': step === 1,
-									}
+									},
 								)}
 							>
 								<Form.Item
 									name='lastName'
 									rules={[{ required: true, message: 'Укажите Вашу фамилию' }]}
 								>
-									<Input placeholder='Фамилия' />
+									<Input placeholder='Фамилия'/>
 								</Form.Item>
 								<Form.Item
 									name='firstName'
 									rules={[{ required: true, message: 'Укажите Ваше имя' }]}
 								>
-									<Input placeholder='Имя' />
+									<Input placeholder='Имя'/>
 								</Form.Item>
 								<Form.Item
 									name='patronymic'
 									rules={[{ required: true, message: 'Укажите Ваше отчество' }]}
 								>
-									<Input placeholder='Отчество' />
+									<Input placeholder='Отчество'/>
 								</Form.Item>
 								<Form.Item
 									name='email'
 									rules={[{ required: true, message: 'Укажите E-mail' }]}
 								>
-									<Input placeholder='E-mail' />
+									<Input placeholder='E-mail'/>
 								</Form.Item>
 								<Form.Item
 									name='phone'
@@ -186,7 +191,7 @@ const Registration = (props) => {
 									]}
 									hasFeedback
 								>
-									<Input.Password placeholder='Придумайте пароль' />
+									<Input.Password placeholder='Придумайте пароль'/>
 								</Form.Item>
 								<Form.Item
 									name='retryPassword'
@@ -203,7 +208,7 @@ const Registration = (props) => {
 									]}
 									hasFeedback
 								>
-									<Input.Password placeholder='Повторите пароль' />
+									<Input.Password placeholder='Повторите пароль'/>
 								</Form.Item>
 								<Button
 									type='primary'
@@ -228,7 +233,7 @@ const Registration = (props) => {
 									'registration-form__form registration-form__form--details',
 									{
 										'registration-form__form--active': step === 2,
-									}
+									},
 								)}
 							>
 								<Form.Item
@@ -247,7 +252,7 @@ const Registration = (props) => {
 													<Option key={item.label} value={item.label}>
 														{item.label}
 													</Option>
-												)
+												),
 										)}
 									</Select>
 								</Form.Item>
@@ -315,7 +320,7 @@ const Registration = (props) => {
 									'registration-form__form registration-form__form--payment',
 									{
 										'registration-form__form--active': step === 3,
-									}
+									},
 								)}
 							>
 								<Form.Item
