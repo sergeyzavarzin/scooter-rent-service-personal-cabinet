@@ -13,6 +13,8 @@ const userInfo = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
 	: {};
 
+const isMobileApp = Boolean(localStorage.getItem('isMobileApp'));
+
 const tokenData = token ? parseJwt(token) : null;
 
 const {
@@ -47,6 +49,7 @@ const AppStore = types
 			types.boolean,
 			!window.matchMedia('(min-width: 768px)').matches
 		),
+		isMobileApp: types.optional(types.boolean, isMobileApp),
 	})
 	.views((self) => ({}))
 	.actions((self) => {

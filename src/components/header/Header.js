@@ -19,6 +19,7 @@ import './Header.scss';
 const Header = ({
 	store: {
 		isMobile,
+		isMobileApp,
 		userStore: { isUserLogged, fullName, initials },
 	},
 	history,
@@ -45,7 +46,9 @@ const Header = ({
 	};
 
 	return (
-		<Layout.Header className='header'>
+		<Layout.Header className={classNames('header', {
+			'header--hidden': isMobileApp,
+		})}>
 			<div className='header__wrapper'>
 				<div className='header__left'>
 					{isUserLogged && (
