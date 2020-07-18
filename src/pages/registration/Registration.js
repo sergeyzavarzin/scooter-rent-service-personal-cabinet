@@ -335,7 +335,7 @@ const Registration = (props) => {
 								>
 									<Radio.Group>
 										<Radio value={1}>Картой на сайте</Radio>
-										{/* <Radio value={2}>Оплата при получении</Radio> */}
+										<Radio value={2}>Оплата при получении</Radio>
 									</Radio.Group>
 								</Form.Item>
 								<Form.Item
