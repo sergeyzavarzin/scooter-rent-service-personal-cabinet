@@ -10,9 +10,9 @@ import './ChangePassword.scss';
 
 const ChangePassword = ({
 	store: {
-		userStore: { isUserLogged, email },
+		userStore: { isUserLogged },
 	},
-	history,
+	history: { push },
 }) => {
 	const [hash, setHash]  = useState(null)
 	const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ const ChangePassword = ({
 				description: 'Пароль успешно изменен.',
 			});
 			setTimeout(() => {
-				history.push('/');
+				push('/');
 			}, 3000);
 		} finally {
 			setIsLoading(false);
