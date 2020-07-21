@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 import { notification, Spin, Typography, Button } from 'antd';
 
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
 import { activateCardByOrder } from '../../globals/services/activateCard';
 
-const SuccessPayment = ({ history: { push } }) => {
+const SuccessPayment = ({
+	store: {
+		userStore: { isUserLogged },
+	},
+	history: { push },
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [status, setStatus] = useState(null);
 	const [activated, setActivated] = useState(null);
@@ -16,8 +22,10 @@ const SuccessPayment = ({ history: { push } }) => {
 			const urlParams = new URLSearchParams(window.location.search);
 			const orderId = urlParams.get('orderId');
 			const paymentStatus = await getPaymentStatus(orderId);
-			const activateResult = await activateCardByOrder(orderId);
-			setActivated(activateResult);
+			if (isUserLogged) {
+				const activateResult = await activateCardByOrder(orderId);
+				setActivated(activateResult);
+			}
 			setStatus(paymentStatus.status);
 		} catch (e) {
 			notification.open({
@@ -57,4 +65,4 @@ const SuccessPayment = ({ history: { push } }) => {
 	);
 };
 
-export default withRouter(SuccessPayment);
+export default withRouter(inject('store')(observer(SuccessPayment)));
