@@ -124,7 +124,7 @@ const Registration = (props) => {
 								onClick={() =>
 									process.env.REACT_APP_IS_GOODS_OVER === 'true' ?
 										redirect('https://www.moysamokat.ru/business') :
-										push('/registration/courier?discountCode=NEW_COURIER')
+										push('/registration/courier')
 								}
 							>
 								Для курьеров
