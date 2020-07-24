@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, Select, Radio } from 'antd';
 import { withRouter } from 'react-router-dom';
-import MaskedInput from 'antd-mask-input';
 import classNames from 'classnames';
 
 import { passwordPattern } from '../../constants/passwordPattern';
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
 import { getOfferLink } from '../../utils/getOfferLink';
+import { getNextPhoneValue, getPhoneRegexpSymbolsFromStart } from '../../utils/getNextPhoneValue';
 import { filterColorsForCategory } from './_utils';
 import getCookie from '../../utils/getCookie';
 import { redirect } from '../../utils/redirect';
@@ -31,6 +31,7 @@ const Registration = (props) => {
 	]);
 	const [step, setStep] = useState(1);
 	const [formValues, setValues] = useState({});
+	const [prevPhoneValue, setPrevPhoneValue] = useState('');
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
 	useEffect(() => {
@@ -95,6 +96,14 @@ const Registration = (props) => {
 		}
 	};
 
+	const handleFormChange = (name, { changedFields, forms }) => {
+		if (name !== 'step-1' || !changedFields.length || changedFields[0].name[0] !== 'phone') return;
+		const form = forms['step-1'];
+		const phone = getNextPhoneValue(form.getFieldValue('phone'), prevPhoneValue);
+		setPrevPhoneValue(phone);
+		form.setFieldsValue({ phone });
+	};
+
 	return (
 		<div className='registration-page'>
 			<div className='registration-form'>
@@ -135,7 +144,10 @@ const Registration = (props) => {
 					<>
 						<h1>Регистрация {category === 'courier' && <>для курьеров</>}</h1>
 						{!!step && <h1>Шаг {step} из 3</h1>}
-						<Form.Provider onFormFinish={handleFormFinish}>
+						<Form.Provider 
+							onFormFinish={handleFormFinish}
+							onFormChange={handleFormChange}
+						>
 							<Form
 								name='step-1'
 								className={classNames(
@@ -173,15 +185,13 @@ const Registration = (props) => {
 									name='phone'
 									rules={[
 										{ required: true, message: 'Укажите Ваш телефон' },
-										{ min: 15, message: 'Не верный формат телефона' },
-										{ max: 15, message: 'Не верный формат телефона' },
+										{
+											pattern: getPhoneRegexpSymbolsFromStart(17),
+											message: "Неполный номер телефона"
+										},
 									]}
 								>
-									<MaskedInput
-										mask='8(111)111-11-11'
-										size={11}
-										placeholder='Телефон'
-									/>
+									<Input placeholder='Телефон'/>
 								</Form.Item>
 								<Form.Item
 									name='password'
