@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { notification, Spin, Typography, Button } from 'antd';
+import ReactPixel from 'react-facebook-pixel';
 
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
 import { activateCardByOrder } from '../../globals/services/activateCard';
@@ -40,6 +41,7 @@ const SuccessPayment = ({
 
 	useEffect(() => {
 		getOrderStatus();
+		ReactPixel.pageView(); 
 	}, []);
 
 	return isLoading ? (
