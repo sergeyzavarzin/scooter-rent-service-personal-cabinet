@@ -282,9 +282,9 @@ const Registration = (props) => {
 										<Option value='Сообщение в WhatsApp'>
 											Сообщение в WhatsApp
 										</Option>
-										<Option value='Сообщение в Telegram'>
+										{/* <Option value='Сообщение в Telegram'>
 											Сообщение в Telegram
-										</Option>
+										</Option> */}
 									</Select>
 								</Form.Item>
 								<Form.Item
