@@ -17,7 +17,6 @@ export const login = (email, password) =>
 					registrationDate: response.data.registrationDate,
 				})
 			);
-			window.location.href = '/';
 			resolve(response.data);
 		} catch (e) {
 			reject(e);

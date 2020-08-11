@@ -24,7 +24,8 @@ export const registration = (data, payNow) =>
 						'Сейчас вас автоматически перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.',
 				});
 				setTimeout(async () => {
-					await login(data.email, data.password);
+					await login(data.email, data.password)
+					window.location.href = '/';
 				}, 2500);
 			}
 			resolve(response.data);

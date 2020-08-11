@@ -28,11 +28,14 @@ const Header = ({
 	const [isIsMenuVisible, setIsMenuVisible] = useState(false);
 
 	const content = (
-		<>
+		<div className="header__popover">
+			<Button type='primary' onClick={() => history.push('/change-password')}>
+				Сменить пароль
+			</Button>
 			<Button type='danger' onClick={() => logout()}>
 				Выйти
 			</Button>
-		</>
+		</div>
 	);
 
 	useEffect(() => {

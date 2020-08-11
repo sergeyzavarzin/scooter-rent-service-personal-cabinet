@@ -15,7 +15,9 @@ class Login extends React.Component {
 	onFinish = async (values) => {
 		this.setState({ isLoading: true });
 		try {
-			await login(values.email, values.password);
+			await login(values.email, values.password).then(() => {
+				window.location.href = '/';
+			});
 		} finally {
 			this.setState({ isLoading: false });
 		}
