@@ -24,58 +24,65 @@ class Login extends React.Component {
 	};
 
 	render() {
-		return (
-			<div className='login-page'>
-				<div className='form'>
-					<h1>Вход</h1>
-					<Form name='login' className='form__form' onFinish={this.onFinish}>
-						<Form.Item
-							name='email'
-							rules={[
-								{
-									type: 'email',
-									message: 'Введите валидный E-mail',
-								},
-								{
-									required: true,
-									message: 'Введите E-mail',
-								},
-							]}
-						>
-							<Input
-								prefix={<UserOutlined className='site-form-item-icon' />}
-								placeholder='E-mail'
-							/>
-						</Form.Item>
-						<Form.Item
-							name='password'
-							rules={[{ required: true, message: 'Введите пароль' }]}
-						>
-							<Input.Password
-								prefix={<LockOutlined className='site-form-item-icon' />}
-								type='password'
-								placeholder='Пароль'
-							/>
-						</Form.Item>
-						<Form.Item>
-							<Button
-								type='primary'
-								htmlType='submit'
-								size='large'
-								className='form__button'
-								loading={this.state.isLoading}
+		const callbackUrl = localStorage.getItem('callbackUrl');
+		if (callbackUrl) {
+			localStorage.removeItem('callbackUrl');
+			window.location.replace(callbackUrl);
+			return true;
+		} else {
+			return (
+				<div className='login-page'>
+					<div className='form'>
+						<h1>Вход</h1>
+						<Form name='login' className='form__form' onFinish={this.onFinish}>
+							<Form.Item
+								name='email'
+								rules={[
+									{
+										type: 'email',
+										message: 'Введите валидный E-mail',
+									},
+									{
+										required: true,
+										message: 'Введите E-mail',
+									},
+								]}
 							>
-								Войти
-							</Button>
-						</Form.Item>
-						<div className='form__links'>
-							<Link to='/forgot'>Я забыл пароль</Link>
-							<Link to='/registration'>Регистрация</Link>
-						</div>
-					</Form>
+								<Input
+									prefix={<UserOutlined className='site-form-item-icon'/>}
+									placeholder='E-mail'
+								/>
+							</Form.Item>
+							<Form.Item
+								name='password'
+								rules={[{ required: true, message: 'Введите пароль' }]}
+							>
+								<Input.Password
+									prefix={<LockOutlined className='site-form-item-icon'/>}
+									type='password'
+									placeholder='Пароль'
+								/>
+							</Form.Item>
+							<Form.Item>
+								<Button
+									type='primary'
+									htmlType='submit'
+									size='large'
+									className='form__button'
+									loading={this.state.isLoading}
+								>
+									Войти
+								</Button>
+							</Form.Item>
+							<div className='form__links'>
+								<Link to='/forgot'>Я забыл пароль</Link>
+								<Link to='/registration'>Регистрация</Link>
+							</div>
+						</Form>
+					</div>
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 }
 
