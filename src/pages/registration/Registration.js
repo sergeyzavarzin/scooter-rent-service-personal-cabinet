@@ -40,6 +40,8 @@ const Registration = (props) => {
 		const cityValue = urlParams.get('city');
 		if (cityValue && Cities.find(value => value.en === cityValue)) {
 			setCity(cityValue);
+		} else {
+			setCity('');
 		}
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
