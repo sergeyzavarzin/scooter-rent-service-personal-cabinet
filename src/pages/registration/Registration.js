@@ -34,6 +34,13 @@ const Registration = (props) => {
 	const [prevPhoneValue, setPrevPhoneValue] = useState('');
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
 
+	const search = window.location.search;
+	const params = new URLSearchParams(search);
+	const callbackUrl = params.get('callbackUrl');
+	if(callbackUrl) {
+		localStorage.setItem('callbackUrl', callbackUrl);
+	}
+
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const discountCodeValue = urlParams.get('discountCode');

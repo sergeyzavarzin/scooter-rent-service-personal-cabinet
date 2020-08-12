@@ -18,14 +18,22 @@ export const registration = (data, payNow) =>
 					window.location.href = formUrl;
 				}, 2500);
 			} else {
+				let callbackUrl = localStorage.getItem('callbackUrl');
+				callbackUrl = callbackUrl ? `${callbackUrl}?email=${data.email}` : '/';
+				const msgApp = 'Сейчас вас автоматически перенаправит на форму входа. Вы можете оплатить заказ внутри личного кабинета в любой момент.';
+				const msgLogin = 'Сейчас вас автоматически перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.';
+
 				notification.open({
 					message: 'Успешно!',
-					description:
-						'Сейчас вас автоматически перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.',
+					description: callbackUrl ? msgApp : msgLogin,
 				});
+
 				setTimeout(async () => {
-					await login(data.email, data.password)
-					window.location.href = '/';
+					localStorage.removeItem('callbackUrl');
+					if (callbackUrl === '/') {
+						await login(data.email, data.password)
+					}
+					window.location.href = callbackUrl;
 				}, 2500);
 			}
 			resolve(response.data);
