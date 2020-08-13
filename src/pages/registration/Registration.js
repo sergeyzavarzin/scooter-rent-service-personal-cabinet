@@ -90,7 +90,7 @@ const Registration = (props) => {
 					content: getCookie('utm_content') || 'Отсутствует',
 					term: getCookie('utm_term') || 'Отсутствует',
 				},
-				city: Cities.findIndex(value => value.en === city)
+				city: String(Cities.findIndex(value => value.en === city))
 			};
 			await registration(registrationData, payNow);
 		} finally {
