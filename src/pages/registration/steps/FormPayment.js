@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Form, Button, Checkbox, Radio } from 'antd';
 import { getOfferLink } from '../../../utils/getOfferLink';
 
-export const FormPayment = ({ active, category, discountCode, isLoading, setStep }) => (
+export const FormPayment = ({ active, category, discountCode, isLoading, setStep, city }) => (
   <Form
     name='step-3'
     className={classNames(
@@ -41,8 +41,9 @@ export const FormPayment = ({ active, category, discountCode, isLoading, setStep
     >
       <Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
         Даю согласие на{' '}
+        ,
         <a
-          href='https://www.moysamokat.ru/privacy-policy'
+          href={`${city === '1' ? 'https://www.moysamokat.ru/privacy-kazan' : 'https://www.moysamokat.ru/privacy-policy'}`}
           target='_blank'
           rel='noopener noreferrer'
         >
@@ -50,7 +51,7 @@ export const FormPayment = ({ active, category, discountCode, isLoading, setStep
         </a>{' '}
         и соглашаюсь с{' '}
         <a
-          href={getOfferLink(category, discountCode)}
+          href={getOfferLink(category, discountCode, city)}
           target='_blank'
           rel='noopener noreferrer'
         >

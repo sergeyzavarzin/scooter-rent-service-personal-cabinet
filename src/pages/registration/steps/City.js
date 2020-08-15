@@ -24,6 +24,7 @@ export const City = ({ push }) => (
           className='registration-form__button'
           onClick={() => push(`/registration/?city=${city.en}`)}
           style={{ marginTop: '15px' }}
+          key={city.en}
         >
           {city.ru}
         </Button>

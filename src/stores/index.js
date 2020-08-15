@@ -26,6 +26,7 @@ const {
 	contactId = tokenData ? tokenData.contactId : '',
 	subscriptionId = '',
 	registrationDate = '',
+	city = '',
 } = userInfo;
 
 const AppStore = types
@@ -41,6 +42,7 @@ const AppStore = types
 			subscriptionId,
 			contactId,
 			registrationDate,
+			city,
 		}),
 		subscriptionStore: types.optional(SubscriptionStore, {}),
 		paymentStore: types.optional(PaymentStore, {}),
@@ -50,6 +52,7 @@ const AppStore = types
 			!window.matchMedia('(min-width: 768px)').matches
 		),
 		isMobileApp: types.optional(types.boolean, isMobileApp),
+		globalCity: types.optional(types.string, ''),
 	})
 	.views((self) => ({}))
 	.actions((self) => {
@@ -93,10 +96,15 @@ const AppStore = types
 			}
 		};
 
+		const setGlobalCity = (cityNumber) => {
+			store.globalCity = cityNumber;
+		};
+
 		return {
 			afterCreate,
 			setAppLoaded,
 			setIsMobile,
+			setGlobalCity,
 		};
 	});
 

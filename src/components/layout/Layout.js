@@ -16,7 +16,8 @@ const AppLayout = ({
 	store: {
 		setIsMobile,
 		isMobileApp,
-		userStore: { isUserLogged },
+		userStore: { isUserLogged, city },
+		globalCity,
 	},
 }) => {
 	useEffect(() => {
@@ -38,7 +39,7 @@ const AppLayout = ({
 							<Router />
 						</div>
 					</Layout.Content>
-					<Footer />
+					<Footer city={isUserLogged ? city: globalCity} />
 				</Layout>
 			</Layout>
 		</div>

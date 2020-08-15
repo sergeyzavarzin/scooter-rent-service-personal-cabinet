@@ -1,4 +1,11 @@
-export const getOfferLink = (category, discountCode) => {
+export const getOfferLink = (category, discountCode, city) => {
+	if (category === 'courier' && city === '1') {
+		return 'https://www.moysamokat.ru/oferta_kazan_delivery';
+	}
+	if (city === '1') {
+		return 'https://www.moysamokat.ru/oferta_kazan';
+	}
+
 	if (category === 'courier' && discountCode.toUpperCase() === 'OLD_FRIEND') {
 		return 'https://moysamokat.ru/oferta_delivery_2500';
 	}

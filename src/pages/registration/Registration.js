@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import { withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
@@ -21,10 +22,13 @@ const Registration = (props) => {
 		match: {
 			params: { category = null },
 		},
+		store: {
+			globalCity,
+			setGlobalCity,
+		},
 	} = props;
 	const [isLoading, setIsLoading] = useState(false);
 	const [discountCode, setDiscountCode] = useState('');
-	const [city, setCity] = useState('');
 	const [colors, setColors] = useState([
 		{ label: 'Черный', value: true },
 		{ label: 'Белый', value: true },
@@ -44,11 +48,11 @@ const Registration = (props) => {
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const discountCodeValue = urlParams.get('discountCode');
-		const cityValue = urlParams.get('city');
-		if (cityValue && Cities.find(value => value.en === cityValue)) {
-			setCity(cityValue);
+		const cityNameValue = urlParams.get('city');
+		if (cityNameValue && Cities.find(value => value.en === cityNameValue)) {
+			setGlobalCity(String(Cities.findIndex(value => value.en === cityNameValue)));
 		} else {
-			setCity('');
+			setGlobalCity('');
 		}
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
@@ -90,7 +94,7 @@ const Registration = (props) => {
 					content: getCookie('utm_content') || 'Отсутствует',
 					term: getCookie('utm_term') || 'Отсутствует',
 				},
-				city: String(Cities.findIndex(value => value.en === city))
+				city: globalCity,
 			};
 			await registration(registrationData, payNow);
 		} finally {
@@ -121,9 +125,9 @@ const Registration = (props) => {
 	return (
 		<div className='registration-page'>
 			<div className='registration-form'>
-				{!city && <City push={push} />}
-				{!category && city && <Category push={push} city={city} />}
-				{category && city && (
+				{!globalCity && <City push={push} discountCode={discountCode} />}
+				{!category && globalCity && <Category push={push} city={Cities[globalCity].en} discountCode={discountCode} />}
+				{category && globalCity && (
 					<>
 						<h1>Регистрация {category === 'courier' && <>для курьеров</>}</h1>
 						{!!step && <h1>Шаг {step} из 3</h1>}
@@ -146,6 +150,7 @@ const Registration = (props) => {
 								discountCode={discountCode}
 								isLoading={isLoading}
 								setStep={setStep}
+								city={globalCity}
 							/>
 						</Form.Provider>
 					</>
@@ -155,4 +160,4 @@ const Registration = (props) => {
 	);
 };
 
-export default withRouter(Registration);
+export default withRouter(inject('store')(observer(Registration)));

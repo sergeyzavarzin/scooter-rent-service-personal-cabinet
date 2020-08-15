@@ -11,6 +11,7 @@ const UserStore = types
 		subscriptionId: types.optional(types.string, ''),
 		contactId: types.optional(types.string, ''),
 		registrationDate: types.optional(types.string, ''),
+		city: types.optional(types.string, ''),
 	})
 	.views((self) => ({
 		get initials() {
