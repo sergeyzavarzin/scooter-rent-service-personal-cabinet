@@ -41,7 +41,6 @@ export const FormPayment = ({ active, category, discountCode, isLoading, setStep
     >
       <Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
         Даю согласие на{' '}
-        ,
         <a
           href={`${city === '1' ? 'https://www.moysamokat.ru/privacy-kazan' : 'https://www.moysamokat.ru/privacy-policy'}`}
           target='_blank'
