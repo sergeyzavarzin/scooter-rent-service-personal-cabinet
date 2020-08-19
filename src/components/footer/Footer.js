@@ -24,7 +24,7 @@ const MoskvaInfo = () => (
 
 const KazanInfo = () => (
 	<>
-		ООО "ПРОФИ ФОТО"<br />
+		ООО "ФОРМИ МЕНЕДЖМЕНТ"<br />
 		E-mail:{' '}
 		<a
 			href='mailto:info.kazan@moysamokat.ru'
