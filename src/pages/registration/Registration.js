@@ -23,7 +23,7 @@ const Registration = (props) => {
 			params: { category = null },
 		},
 		store: {
-			globalCity,
+			globalCity = '0',
 			setGlobalCity,
 		},
 	} = props;
@@ -96,7 +96,7 @@ const Registration = (props) => {
 				},
 				city: globalCity,
 			};
-			await registration(registrationData, payNow);
+			await registration(registrationData, payNow, globalCity);
 		} finally {
 			setIsLoading(false);
 		}

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import ReactPixel from 'react-facebook-pixel';
 
+import { Pixels } from '../../index';
 import Login from '../../pages/login';
 import Registration from '../../pages/registration';
 import FailPayment from '../../pages/failPayment';
@@ -13,9 +15,17 @@ import ChangePassword from '../../pages/changePassword/ChangePassword';
 
 const Router = ({
 	store: {
-		userStore: { isUserLogged },
+		userStore: { isUserLogged, city = '0'},
 	},
+	globalCity = '0'
 }) => {
+	const location = useLocation();
+
+	useEffect(() => {
+		const pixel = isUserLogged ? Pixels[city] : Pixels[globalCity]
+		ReactPixel.trackSingle(pixel);
+  }, [location, city, globalCity, isUserLogged]);
+	
 	return isUserLogged ? (
 		<Switch>
 			<Route path={['/', '/subscription']} exact component={Subscription} />

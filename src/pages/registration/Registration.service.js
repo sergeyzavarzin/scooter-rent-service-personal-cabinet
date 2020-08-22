@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { notification } from 'antd';
+import ReactPixel from 'react-facebook-pixel';
+
+import { Pixels } from '../../index';
 import { login } from '../../globals/services/login';
 import frontLogger from '../../globals/services/frontLogger';
 
-export const registration = (data, payNow) =>
+export const registration = (data, payNow, city) =>
 	new Promise(async (resolve, reject) => {
 		const params = { payNow };
 		try {
 			const response = await axios.post('/auth/signUp', data, { params });
 			const { formUrl = null } = response.data;
+			ReactPixel.trackSingle(Pixels[city], 'Lead')
 			if (payNow && formUrl) {
 				notification.open({
 					message: 'Успешно!',
