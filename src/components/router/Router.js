@@ -23,7 +23,7 @@ const Router = ({
 
 	useEffect(() => {
 		const pixel = isUserLogged ? Pixels[city] : Pixels[globalCity]
-		ReactPixel.trackSingle(pixel);
+		ReactPixel.trackSingle(pixel, 'PageView');
   }, [location, city, globalCity, isUserLogged]);
 	
 	return isUserLogged ? (
