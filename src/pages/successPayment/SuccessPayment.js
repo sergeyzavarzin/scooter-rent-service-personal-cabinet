@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { notification, Spin, Typography, Button } from 'antd';
-import ReactPixel from 'react-facebook-pixel';
 
-import { Pixels } from '../../index';
 import { getPaymentStatus } from '../../globals/services/getPaymentStatus';
 import { activateCardByOrder } from '../../globals/services/activateCard';
 
 const SuccessPayment = ({
 	store: {
-		userStore: { isUserLogged, city = '0' },
+		userStore: { isUserLogged },
 	},
 	history: { push },
-	globalCity = '0',
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [status, setStatus] = useState(null);
@@ -43,9 +40,7 @@ const SuccessPayment = ({
 
 	useEffect(() => {
 		getOrderStatus();
-		const pixel = isUserLogged ? Pixels[city] : Pixels[globalCity]
-		ReactPixel.trackSingle(pixel, 'Purchase');
-  }, [city, globalCity, isUserLogged]);
+  }, []);
 
 	return isLoading ? (
 		<Spin size='large' />
