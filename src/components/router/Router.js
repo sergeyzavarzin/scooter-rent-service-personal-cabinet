@@ -15,8 +15,7 @@ const Router = ({
 	store: {
 		userStore: { isUserLogged },
 	},
-}) => {
-	
+}) => {	
 	return isUserLogged ? (
 		<Switch>
 			<Route path={['/', '/subscription']} exact component={Subscription} />
