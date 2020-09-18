@@ -9,6 +9,7 @@ const SubscriptionStore = types
 		scooter: types.maybeNull(types.string),
 		category: types.maybeNull(types.string),
 		discount: types.maybeNull(types.number),
+		discountCode: types.maybeNull(types.string),
 	})
 	.views((self) => ({
 		get getStatus() {
@@ -63,8 +64,11 @@ const SubscriptionStore = types
 				store.scooter = response.data.scooter;
 				store.category = response.data.category;
 				store.discount = response.data.discount;
+				store.discountCode = response.data.discountCode;
 			} catch (err) {
-				console.log(err);
+				if (process.env.NODE_ENV === 'development') {
+					throw new Error(err)
+				}
 			}
 		});
 

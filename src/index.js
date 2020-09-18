@@ -4,6 +4,7 @@ import App from './components/app';
 import * as serviceWorker from './serviceWorker';
 import './globals/styles/globalStyles.scss';
 
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 serviceWorker.unregister();

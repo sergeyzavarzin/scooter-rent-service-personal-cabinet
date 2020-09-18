@@ -19,6 +19,7 @@ import './Header.scss';
 const Header = ({
 	store: {
 		isMobile,
+		isMobileApp,
 		userStore: { isUserLogged, fullName, initials },
 	},
 	history,
@@ -27,11 +28,14 @@ const Header = ({
 	const [isIsMenuVisible, setIsMenuVisible] = useState(false);
 
 	const content = (
-		<>
+		<div className="header__popover">
+			<Button type='primary' onClick={() => history.push('/change-password')}>
+				Сменить пароль
+			</Button>
 			<Button type='danger' onClick={() => logout()}>
 				Выйти
 			</Button>
-		</>
+		</div>
 	);
 
 	useEffect(() => {
@@ -45,7 +49,9 @@ const Header = ({
 	};
 
 	return (
-		<Layout.Header className='header'>
+		<Layout.Header className={classNames('header', {
+			'header--hidden': isMobileApp,
+		})}>
 			<div className='header__wrapper'>
 				<div className='header__left'>
 					{isUserLogged && (

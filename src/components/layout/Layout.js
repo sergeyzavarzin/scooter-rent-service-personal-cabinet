@@ -8,13 +8,16 @@ import Header from '../header';
 import Navigation from '../navigation';
 
 import './Layout.scss';
+import classNames from "classnames";
 
 const disableNav = true;
 
 const AppLayout = ({
 	store: {
 		setIsMobile,
-		userStore: { isUserLogged },
+		isMobileApp,
+		userStore: { isUserLogged, city },
+		globalCity,
 	},
 }) => {
 	useEffect(() => {
@@ -29,12 +32,14 @@ const AppLayout = ({
 				{!disableNav && isUserLogged && <Navigation />}
 				<Layout>
 					<Header />
-					<Layout.Content className='layout__content'>
+					<Layout.Content className={classNames('layout__content', {
+						'mobile-app-margin': isMobileApp,
+					})}>
 						<div className='site-layout-background'>
 							<Router />
 						</div>
 					</Layout.Content>
-					<Footer />
+					<Footer city={isUserLogged ? city: globalCity} />
 				</Layout>
 			</Layout>
 		</div>

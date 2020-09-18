@@ -15,9 +15,9 @@ export const login = (email, password) =>
 					patronymic: response.data.patronymic,
 					subscriptionId: response.data.subscriptionId,
 					registrationDate: response.data.registrationDate,
+					city: response.data.city,
 				})
 			);
-			window.location.href = '/';
 			resolve(response.data);
 		} catch (e) {
 			reject(e);

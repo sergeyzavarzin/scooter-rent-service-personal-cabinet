@@ -15,13 +15,14 @@ const Router = ({
 	store: {
 		userStore: { isUserLogged },
 	},
-}) => {
+}) => {	
 	return isUserLogged ? (
 		<Switch>
 			<Route path={['/', '/subscription']} exact component={Subscription} />
 			<Route path='/help' exact component={Help} />
 			<Route path='/successPayment' exact component={SuccessPayment} />
 			<Route path='/failPayment' exact component={FailPayment} />
+			<Route path='/change-password' exact component={ChangePassword} />
 			<Redirect to='/' />
 		</Switch>
 	) : (

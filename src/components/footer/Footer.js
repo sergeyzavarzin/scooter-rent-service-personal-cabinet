@@ -1,8 +1,8 @@
 import React from 'react';
 import { Layout } from 'antd';
 
-const Footer = () => (
-	<Layout.Footer style={{ textAlign: 'center', fontSize: 12 }}>
+const MoskvaInfo = () => (
+	<>
 		ООО "МОЙ САМОКАТ" © 2020 <br />
 		E-mail:{' '}
 		<a
@@ -19,6 +19,34 @@ const Footer = () => (
 		</a>
 		<br />
 		Адрес: 115114 г. Москва, 1-й Кожевнический пер., д. 6, стр. 1
+	</>
+);
+
+const KazanInfo = () => (
+	<>
+		ООО "ФОРМИ МЕНЕДЖМЕНТ"<br />
+		E-mail:{' '}
+		<a
+			href='mailto:info.kazan@moysamokat.ru'
+			target='_blank'
+			rel='noopener noreferrer'
+		>
+			info.kazan@moysamokat.ru
+		</a>{' '}
+		<br />
+		Телефон:{' '}
+		<a href='tel:+79503244103' target='_blank' rel='noopener noreferrer'>
+			+7 (950) 324-41-03
+		</a>
+		<br />
+		Адрес 420111 г. Казань, улица Островского, 37
+	</>
+);
+
+const Footer = ({ city }) => (
+	<Layout.Footer style={{ textAlign: 'center', fontSize: 12 }}>
+		{(city ==='' || city === '0') && <MoskvaInfo />}
+		{city === '1' && <KazanInfo />}
 	</Layout.Footer>
 );
 

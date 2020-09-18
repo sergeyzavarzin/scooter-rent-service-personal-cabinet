@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { notification } from 'antd';
+
 import { login } from '../../globals/services/login';
 import frontLogger from '../../globals/services/frontLogger';
 
-export const registration = (data, payNow) =>
+export const registration = (data, payNow, city) =>
 	new Promise(async (resolve, reject) => {
 		const params = { payNow };
 		try {
@@ -18,13 +19,22 @@ export const registration = (data, payNow) =>
 					window.location.href = formUrl;
 				}, 2500);
 			} else {
+				let callbackUrl = localStorage.getItem('callbackUrl');
+				callbackUrl = callbackUrl ? `${callbackUrl}?email=${data.email}` : '/';
+				const msgApp = 'Сейчас вас автоматически перенаправит на форму входа. Вы можете оплатить заказ внутри личного кабинета в любой момент.';
+				const msgLogin = 'Сейчас вас автоматически перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.';
+
 				notification.open({
 					message: 'Успешно!',
-					description:
-						'Сейчас вас автоматически перенаправит в личный кабинет. Вы можете оплатить заказ внутри личного кабинета в любой момент.',
+					description: callbackUrl ? msgApp : msgLogin,
 				});
+
 				setTimeout(async () => {
-					await login(data.email, data.password);
+					localStorage.removeItem('callbackUrl');
+					if (callbackUrl === '/') {
+						await login(data.email, data.password)
+					}
+					window.location.href = callbackUrl;
 				}, 2500);
 			}
 			resolve(response.data);

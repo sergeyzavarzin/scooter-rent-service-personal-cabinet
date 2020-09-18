@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, Select, Radio } from 'antd';
+import { Form } from 'antd';
 import { withRouter } from 'react-router-dom';
-import MaskedInput from 'antd-mask-input';
-import classNames from 'classnames';
+import { inject, observer } from 'mobx-react';
 
-import { passwordPattern } from '../../constants/passwordPattern';
 import { registration } from './Registration.service';
 import { getColors } from '../../globals/services/getColors';
-import { getOfferLink } from '../../utils/getOfferLink';
-import { filterColorsForCategory } from './_utils';
+import { getNextPhoneValue } from '../../utils/getNextPhoneValue';
 import getCookie from '../../utils/getCookie';
 
-import './Registration.scss';
+import { City, Cities } from './steps/City';
+import { Category } from './steps/Category';
+import { FormUserInfo } from './steps/FormUserInfo';
+import { FormSettings } from './steps/FormSettings';
+import { FormPayment } from './steps/FormPayment';
 
-const { Option } = Select;
+import './Registration.scss';
 
 const Registration = (props) => {
 	const {
 		history: { push },
 		match: {
 			params: { category = null },
+		},
+		store: {
+			globalCity = '0',
+			setGlobalCity,
 		},
 	} = props;
 	const [isLoading, setIsLoading] = useState(false);
@@ -30,11 +35,25 @@ const Registration = (props) => {
 	]);
 	const [step, setStep] = useState(1);
 	const [formValues, setValues] = useState({});
+	const [prevPhoneValue, setPrevPhoneValue] = useState('');
 	const [isColorsLoading, setIsColorsLoading] = useState(false);
+
+	const search = window.location.search;
+	const params = new URLSearchParams(search);
+	const callbackUrl = params.get('callbackUrl');
+	if(callbackUrl) {
+		localStorage.setItem('callbackUrl', callbackUrl);
+	}
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const discountCodeValue = urlParams.get('discountCode');
+		const cityNameValue = urlParams.get('city');
+		if (cityNameValue && Cities.find(value => value.en === cityNameValue)) {
+			setGlobalCity(String(Cities.findIndex(value => value.en === cityNameValue)));
+		} else {
+			setGlobalCity('');
+		}
 		if (discountCodeValue && discountCodeValue.length) {
 			setDiscountCode(discountCodeValue);
 		}
@@ -43,7 +62,7 @@ const Registration = (props) => {
 			.then((result) => {
 				const isOneAvailable = result.reduce(
 					(acc, curr) => acc || curr.value,
-					false
+					false,
 				);
 				if (isOneAvailable) {
 					setColors(result);
@@ -75,8 +94,9 @@ const Registration = (props) => {
 					content: getCookie('utm_content') || 'Отсутствует',
 					term: getCookie('utm_term') || 'Отсутствует',
 				},
+				city: globalCity,
 			};
-			await registration(registrationData, payNow);
+			await registration(registrationData, payNow, globalCity);
 		} finally {
 			setIsLoading(false);
 		}
@@ -94,293 +114,44 @@ const Registration = (props) => {
 		}
 	};
 
+	const handleFormChange = (name, { changedFields, forms }) => {
+		if (name !== 'step-1' || !changedFields.length || changedFields[0].name[0] !== 'phone') return;
+		const form = forms['step-1'];
+		const phone = getNextPhoneValue(form.getFieldValue('phone'), prevPhoneValue);
+		setPrevPhoneValue(phone);
+		form.setFieldsValue({ phone });
+	};
+
 	return (
 		<div className='registration-page'>
 			<div className='registration-form'>
-				{!category ? (
-					<>
-						<h1>Регистрация</h1>
-						<div>
-							<Button
-								type='primary'
-								htmlType='submit'
-								size='large'
-								className='registration-form__button'
-								onClick={() =>
-									push(`/registration/client?discountCode=NEW_USER`)
-								}
-								style={{ margin: '15px 0' }}
-							>
-								Для личного пользования
-							</Button>
-							<Button
-								type='primary'
-								htmlType='submit'
-								size='large'
-								className='registration-form__button'
-								onClick={() =>
-									push(`/registration/courier?discountCode=NEW_COURIER`)
-								}
-							>
-								Для курьеров
-							</Button>
-						</div>
-					</>
-				) : (
+				{!globalCity && <City push={push} discountCode={discountCode} />}
+				{!category && globalCity && <Category push={push} city={Cities[globalCity].en} discountCode={discountCode} />}
+				{category && globalCity && (
 					<>
 						<h1>Регистрация {category === 'courier' && <>для курьеров</>}</h1>
 						{!!step && <h1>Шаг {step} из 3</h1>}
-						<Form.Provider onFormFinish={handleFormFinish}>
-							<Form
-								name='step-1'
-								className={classNames(
-									'registration-form__form registration-form__form--main',
-									{
-										'registration-form__form--active': step === 1,
-									}
-								)}
-							>
-								<Form.Item
-									name='lastName'
-									rules={[{ required: true, message: 'Укажите Вашу фамилию' }]}
-								>
-									<Input placeholder='Фамилия' />
-								</Form.Item>
-								<Form.Item
-									name='firstName'
-									rules={[{ required: true, message: 'Укажите Ваше имя' }]}
-								>
-									<Input placeholder='Имя' />
-								</Form.Item>
-								<Form.Item
-									name='patronymic'
-									rules={[{ required: true, message: 'Укажите Ваше отчество' }]}
-								>
-									<Input placeholder='Отчество' />
-								</Form.Item>
-								<Form.Item
-									name='email'
-									rules={[{ required: true, message: 'Укажите E-mail' }]}
-								>
-									<Input placeholder='E-mail' />
-								</Form.Item>
-								<Form.Item
-									name='phone'
-									rules={[
-										{ required: true, message: 'Укажите Ваш телефон' },
-										{ min: 15, message: 'Не верный формат телефона' },
-										{ max: 15, message: 'Не верный формат телефона' },
-									]}
-								>
-									<MaskedInput
-										mask='8(111)111-11-11'
-										size={11}
-										placeholder='Телефон'
-									/>
-								</Form.Item>
-								<Form.Item
-									name='password'
-									rules={[
-										{ required: true, message: 'Придумайте пароль' },
-										{ pattern: passwordPattern, message: 'Слабый пароль.' },
-									]}
-									hasFeedback
-								>
-									<Input.Password placeholder='Придумайте пароль' />
-								</Form.Item>
-								<Form.Item
-									name='retryPassword'
-									rules={[
-										{ required: true, message: 'Укажите пароль повторно' },
-										({ getFieldValue }) => ({
-											validator(rule, value) {
-												if (!value || getFieldValue('password') === value) {
-													return Promise.resolve();
-												}
-												return Promise.reject('Пароли не совпадают');
-											},
-										}),
-									]}
-									hasFeedback
-								>
-									<Input.Password placeholder='Повторите пароль' />
-								</Form.Item>
-								<Button
-									type='primary'
-									htmlType='submit'
-									size='large'
-									className='registration-form__button'
-								>
-									Далее
-								</Button>
-								<Button
-									type='link'
-									onClick={() => push('/login')}
-									block
-									style={{ marginTop: 15 }}
-								>
-									У меня есть аккаунт
-								</Button>
-							</Form>
-							<Form
-								name='step-2'
-								className={classNames(
-									'registration-form__form registration-form__form--details',
-									{
-										'registration-form__form--active': step === 2,
-									}
-								)}
-							>
-								<Form.Item
-									name='color'
-									hasFeedback
-									validateStatus={isColorsLoading ? 'validating' : null}
-									rules={[{ required: true, message: 'Выберите цвет' }]}
-								>
-									<Select
-										placeholder='Выберите цвет самоката'
-										style={{ textAlign: 'left' }}
-									>
-										{colors.filter(filterColorsForCategory(category)).map(
-											(item) =>
-												item.value && (
-													<Option key={item.label} value={item.label}>
-														{item.label}
-													</Option>
-												)
-										)}
-									</Select>
-								</Form.Item>
-								<Form.Item
-									name='connectType'
-									rules={[
-										{ required: true, message: 'Укажите удобный способ связи' },
-									]}
-								>
-									<Select
-										placeholder='Удобный способ связи'
-										style={{ textAlign: 'left' }}
-									>
-										<Option value='Звонок по телефону'>
-											Звонок по телефону
-										</Option>
-										<Option value='Сообщение в WhatsApp'>
-											Сообщение в WhatsApp
-										</Option>
-										<Option value='Сообщение в Telegram'>
-											Сообщение в Telegram
-										</Option>
-									</Select>
-								</Form.Item>
-								<Form.Item
-									name='deliveryType'
-									rules={[
-										{
-											required: true,
-											message: 'Укажите удобный способ доставки',
-										},
-									]}
-								>
-									<Select
-										placeholder='Способ доставки'
-										style={{ textAlign: 'left' }}
-									>
-										{category !== 'courier' && (
-											<Option value='Курьером'>Доставка курьером</Option>
-										)}
-										<Option value='Самовывоз'>Самовывоз</Option>
-									</Select>
-								</Form.Item>
-								<Button
-									type='primary'
-									htmlType='submit'
-									loading={isLoading}
-									size='large'
-									className='registration-form__button'
-								>
-									Далее
-								</Button>
-								<Button
-									type='link'
-									onClick={() => setStep(1)}
-									block
-									style={{ marginTop: 15 }}
-								>
-									Назад
-								</Button>
-							</Form>
-							<Form
-								name='step-3'
-								className={classNames(
-									'registration-form__form registration-form__form--payment',
-									{
-										'registration-form__form--active': step === 3,
-									}
-								)}
-							>
-								<Form.Item
-									name='payType'
-									label='Способ оплаты'
-									rules={[
-										{
-											required: true,
-											message: 'Выберите способ оплаты',
-										},
-									]}
-								>
-									<Radio.Group>
-										<Radio value={1}>Картой на сайте</Radio>
-										{/* <Radio value={2}>Оплата при получении</Radio> */}
-									</Radio.Group>
-								</Form.Item>
-								<Form.Item
-									name='agreement'
-									valuePropName='checked'
-									rules={[
-										{
-											required: true,
-											message: 'Дайте согласие на обработку данных',
-										},
-									]}
-								>
-									<Checkbox style={{ textAlign: 'left', fontSize: 10 }}>
-										Даю согласие на{' '}
-										<a
-											href='https://www.moysamokat.ru/privacy-policy'
-											target='_blank'
-											rel='noopener noreferrer'
-										>
-											обработку персональных данных
-										</a>{' '}
-										и соглашаюсь с{' '}
-										<a
-											href={getOfferLink(category, discountCode)}
-											target='_blank'
-											rel='noopener noreferrer'
-										>
-											условиями использования сервиса
-										</a>
-										.
-									</Checkbox>
-								</Form.Item>
-								<Button
-									type='primary'
-									htmlType='submit'
-									loading={isLoading}
-									size='large'
-									className='registration-form__button'
-								>
-									Завершить регистрацию
-								</Button>
-								<Button
-									type='link'
-									onClick={() => setStep(2)}
-									block
-									style={{ marginTop: 15 }}
-								>
-									Назад
-								</Button>
-							</Form>
+						<Form.Provider 
+							onFormFinish={handleFormFinish}
+							onFormChange={handleFormChange}
+						>
+							<FormUserInfo push={push} active={step === 1} />
+							<FormSettings
+								active={step === 2} 
+								isColorsLoading={isColorsLoading} 
+								colors={colors} 
+								category={category} 
+								isLoading={isLoading} 
+								setStep={setStep}
+							/>
+							<FormPayment 
+								active={step === 3}
+								category={category}
+								discountCode={discountCode}
+								isLoading={isLoading}
+								setStep={setStep}
+								city={globalCity}
+							/>
 						</Form.Provider>
 					</>
 				)}
@@ -389,4 +160,4 @@ const Registration = (props) => {
 	);
 };
 
-export default withRouter(Registration);
+export default withRouter(inject('store')(observer(Registration)));

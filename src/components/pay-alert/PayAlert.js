@@ -7,11 +7,11 @@ import { CATEGORIES } from '../../constants/subscriptionCatetories';
 import './PayAlert.scss';
 
 const PayAlert = ({
-	store: {
-		userStore: { email, subscriptionId, contactId },
-		subscriptionStore: { category, discount },
-	},
-}) => {
+										store: {
+											userStore: { email, subscriptionId, contactId },
+											subscriptionStore: { category, discount },
+										},
+									}) => {
 	const [isInitialPaymentLoading, setIsInitialPaymentLoading] = useState(false);
 
 	const handleInitialPayment = async () => {
@@ -43,11 +43,9 @@ const PayAlert = ({
 		<div className='pay-alert'>
 			{category === CATEGORIES.B2C ? (
 				<p className='pay-alert__text'>
-					Мы&nbsp;получили Вашу заявку и&nbsp;свяжемся с&nbsp;Вами
-					в&nbsp;ближайшее время для согласования доставки. Вы&nbsp;можете
-					оплатить подписку сейчас и&nbsp;получить бесплатную доставку.
-					Вы&nbsp;также можете произвести оплату из&nbsp;личного кабинета при
-					получении самоката.
+					Мы&nbsp;получили Вашу заявку и&nbsp;свяжемся с&nbsp;Вами в&nbsp;ближайшее время для согласования доставки или
+					самовывоза. Для организации доставки, пожалуйста, оплатите подписку. Если вы&nbsp;будете получать самокат
+					самовывозом, оплатить подписку можно будет в&nbsp;нашем офисе при получении самоката.
 				</p>
 			) : (
 				<p className='pay-alert__text'>
