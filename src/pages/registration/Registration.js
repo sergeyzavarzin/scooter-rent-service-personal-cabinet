@@ -74,6 +74,7 @@ const Registration = (props) => {
 
 	const onFinish = async (values, payNow = false) => {
 		setIsLoading(true);
+		dataLayer.push({'event': 'formsend'});
 		try {
 			const registrationData = {
 				email: values.email.trim(), // trim all spaces to prevent email validation error at server
