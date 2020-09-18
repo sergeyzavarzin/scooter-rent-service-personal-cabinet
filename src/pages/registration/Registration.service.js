@@ -18,6 +18,7 @@ export const registration = (data, payNow, city) =>
 				setTimeout(() => {
 					window.location.href = formUrl;
 				}, 2500);
+				dataLayer.push({'event': 'formsend'});
 			} else {
 				let callbackUrl = localStorage.getItem('callbackUrl');
 				callbackUrl = callbackUrl ? `${callbackUrl}?email=${data.email}` : '/';
@@ -38,6 +39,7 @@ export const registration = (data, payNow, city) =>
 				}, 2500);
 			}
 			resolve(response.data);
+			dataLayer.push({'event': 'formsend'});
 		} catch (error) {
 			await frontLogger(`
 				ERROR: ${JSON.stringify(error)}
